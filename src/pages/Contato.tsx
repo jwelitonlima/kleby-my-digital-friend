@@ -14,7 +14,7 @@ const contatos = [
   { label: "Local", sub: "Picos, PI", href: "#" },
 ];
 
-/* ── Floating label input ── */
+/* ── Floating label input (mobile-optimized) ── */
 function FloatingInput({
   label, value, onChange, required, type = "text",
 }: {
@@ -33,10 +33,10 @@ function FloatingInput({
         onBlur={() => setFocused(false)}
         required={required}
         className={cn(
-          "w-full bg-muted/50 rounded-xl px-4 pt-6 pb-2 text-[14px] text-foreground",
+          "w-full bg-muted/50 rounded-2xl px-4 pt-7 pb-2.5 text-[16px] text-foreground",
           "border border-transparent outline-none transition-all duration-200",
           "focus:border-primary/30 focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.08)]",
-          "placeholder-transparent"
+          "placeholder-transparent min-h-[56px]"
         )}
         placeholder={label}
       />
@@ -44,8 +44,8 @@ function FloatingInput({
         className={cn(
           "absolute left-4 transition-all duration-200 pointer-events-none",
           active
-            ? "top-2 text-[10px] font-semibold tracking-wider uppercase text-primary/70"
-            : "top-1/2 -translate-y-1/2 text-[13px] text-muted-foreground"
+            ? "top-2.5 text-[10px] font-semibold tracking-wider uppercase text-primary/70"
+            : "top-1/2 -translate-y-1/2 text-[14px] text-muted-foreground"
         )}
       >
         {label}
@@ -54,7 +54,7 @@ function FloatingInput({
   );
 }
 
-/* ── Floating label textarea ── */
+/* ── Floating label textarea (mobile-optimized) ── */
 function FloatingTextarea({
   label, value, onChange,
 }: {
@@ -72,10 +72,10 @@ function FloatingTextarea({
         onBlur={() => setFocused(false)}
         rows={4}
         className={cn(
-          "w-full bg-muted/50 rounded-xl px-4 pt-6 pb-3 text-[14px] text-foreground resize-none",
+          "w-full bg-muted/50 rounded-2xl px-4 pt-7 pb-3 text-[16px] text-foreground resize-none",
           "border border-transparent outline-none transition-all duration-200",
           "focus:border-primary/30 focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.08)]",
-          "placeholder-transparent"
+          "placeholder-transparent min-h-[120px]"
         )}
         placeholder={label}
       />
@@ -83,8 +83,8 @@ function FloatingTextarea({
         className={cn(
           "absolute left-4 transition-all duration-200 pointer-events-none",
           active
-            ? "top-2 text-[10px] font-semibold tracking-wider uppercase text-primary/70"
-            : "top-4 text-[13px] text-muted-foreground"
+            ? "top-2.5 text-[10px] font-semibold tracking-wider uppercase text-primary/70"
+            : "top-5 text-[14px] text-muted-foreground"
         )}
       >
         {label}
@@ -105,29 +105,30 @@ const Contato = () => {
 
   return (
     <Section>
-      <div className="grid lg:grid-cols-2 gap-16 lg:gap-20">
-        {/* Left – channels */}
+      {/* Mobile: stacked single column. Desktop: two columns */}
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-20">
+        {/* Channels */}
         <div>
           <SectionLabel>Contato</SectionLabel>
           <SectionTitle>Vamos conversar</SectionTitle>
 
-          <div className="mt-10 space-y-3">
+          <div className="mt-8 md:mt-10 space-y-3">
             {contatos.map((c, i) => (
               <motion.a
                 key={i}
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 6 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.06 }}
+                transition={{ duration: 0.2, delay: i * 0.04 }}
                 className={cn(
-                  "flex items-center justify-between px-5 py-4 rounded-xl",
-                  "bg-muted/40 hover:bg-muted/80 transition-all duration-200",
-                  "group cursor-pointer"
+                  "flex items-center justify-between px-5 py-5 md:py-4 rounded-2xl",
+                  "bg-muted/40 hover:bg-muted/80 active:bg-muted/60 transition-all duration-150",
+                  "group cursor-pointer min-h-[56px]"
                 )}
               >
-                <span className="text-[14px] font-semibold group-hover:text-primary transition-colors duration-200">
+                <span className="text-[15px] md:text-[14px] font-semibold group-hover:text-primary transition-colors duration-200">
                   {c.label}
                 </span>
                 <span className="text-[12px] text-muted-foreground group-hover:text-foreground/60 transition-colors duration-200">
@@ -138,13 +139,13 @@ const Contato = () => {
           </div>
         </div>
 
-        {/* Right – form */}
+        {/* Form */}
         <div>
-          <h3 className="text-[13px] font-semibold tracking-wider uppercase text-muted-foreground mb-8">
+          <h3 className="text-[11px] md:text-[13px] font-semibold tracking-wider uppercase text-muted-foreground mb-6 md:mb-8">
             Enviar mensagem
           </h3>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
             <FloatingInput
               label="Nome"
               value={form.nome}
@@ -159,16 +160,17 @@ const Contato = () => {
             />
 
             <div>
-              <span className="text-[10px] font-semibold tracking-wider uppercase text-muted-foreground block mb-2.5">
+              <span className="text-[10px] font-semibold tracking-wider uppercase text-muted-foreground block mb-3">
                 Preferência
               </span>
-              <div className="flex gap-2.5">
+              <div className="flex gap-3">
                 {["Online", "Presencial"].map((opt) => (
                   <button
                     key={opt}
                     type="button"
                     className={cn(
-                      "px-5 py-2.5 text-[13px] font-medium rounded-xl transition-all duration-200",
+                      "flex-1 md:flex-none px-5 py-3.5 md:py-2.5 text-[14px] md:text-[13px] font-medium rounded-2xl transition-all duration-200 min-h-[48px]",
+                      "active:scale-[0.97]",
                       form.preferencia === opt
                         ? "bg-primary/10 text-primary border border-primary/20"
                         : "bg-muted/50 text-muted-foreground border border-transparent hover:bg-muted/80 hover:text-foreground"
@@ -189,7 +191,7 @@ const Contato = () => {
 
             <Button
               type="submit"
-              className="w-full font-semibold h-12 text-[13px] rounded-xl group transition-all duration-200 hover:shadow-lg hover:shadow-primary/10"
+              className="w-full font-semibold h-[52px] md:h-12 text-[15px] md:text-[13px] rounded-2xl md:rounded-xl group transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 active:scale-[0.98]"
             >
               Enviar mensagem
               <ArrowRight size={14} className="ml-2 transition-transform duration-200 group-hover:translate-x-1" />
