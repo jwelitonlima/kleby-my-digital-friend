@@ -120,7 +120,7 @@ export function Header() {
             <img
               src={theme === "dark" ? logoDark : logoLight}
               alt="Kléby Almeida"
-              className="h-12 md:h-7 w-auto"
+              className="h-[50px] md:h-7 w-auto"
             />
           </Link>
 
