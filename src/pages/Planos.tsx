@@ -1,12 +1,12 @@
 import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/components/Section";
 import { Button } from "@/components/ui/button";
-import { WHATSAPP_LINK } from "@/lib/constants";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const planos = [
-  { nome: "Essencial", freq: "2-3x/sem", destaque: false },
-  { nome: "Evolução", freq: "3-4x/sem", destaque: true },
-  { nome: "Performance", freq: "4-6x/sem", destaque: false },
+  { nome: "Essencial", freq: "2-3x/sem", destaque: false, msg: "Olá, Kléby! Tenho interesse no plano Essencial. Pode me passar mais detalhes?" },
+  { nome: "Evolução", freq: "3-4x/sem", destaque: true, msg: "Olá, Kléby! Tenho interesse no plano Evolução. Pode me passar mais detalhes?" },
+  { nome: "Performance", freq: "4-6x/sem", destaque: false, msg: "Olá, Kléby! Tenho interesse no plano Performance. Pode me passar mais detalhes?" },
 ];
 
 const features = [
@@ -30,6 +30,10 @@ const planFeatures: Record<string, boolean[]> = {
   Performance: [true, true, true, true, true, true, true, true, true, true, true, true],
 };
 
+function getWhatsAppLink(msg: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+
 const Planos = () => (
   <Section>
     <div className="text-center mb-12">
@@ -40,7 +44,57 @@ const Planos = () => (
       </SectionSubtitle>
     </div>
 
-    <div className="max-w-3xl mx-auto overflow-x-auto">
+    {/* Mobile: cards */}
+    <div className="flex flex-col gap-6 md:hidden">
+      {planos.map((p) => (
+        <div
+          key={p.nome}
+          className={cn(
+            "rounded-xl border p-6",
+            p.destaque
+              ? "border-primary bg-primary/5 shadow-md"
+              : "border-border bg-card"
+          )}
+        >
+          <div className="text-center mb-5">
+            <div className="font-bold text-xl">{p.nome}</div>
+            <div className="text-[12px] text-muted-foreground mt-0.5">{p.freq}</div>
+            {p.destaque && (
+              <span className="inline-block mt-2 text-[10px] font-semibold tracking-label uppercase text-primary">
+                Recomendado
+              </span>
+            )}
+          </div>
+          <ul className="space-y-2.5 mb-6">
+            {features.map((f, i) => (
+              <li key={i} className="flex items-center gap-2.5 text-[13px]">
+                {planFeatures[p.nome][i] ? (
+                  <span className="text-primary font-bold text-sm">✓</span>
+                ) : (
+                  <span className="text-border text-sm">—</span>
+                )}
+                <span className={cn(!planFeatures[p.nome][i] && "text-muted-foreground/50")}>
+                  {f}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <a href={getWhatsAppLink(p.msg)} target="_blank" rel="noopener noreferrer">
+            <Button
+              className={cn(
+                "w-full h-12 font-semibold text-[13px] rounded-lg",
+                !p.destaque && "bg-transparent border border-border text-foreground hover:bg-accent"
+              )}
+            >
+              Começar
+            </Button>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    {/* Desktop: table */}
+    <div className="max-w-3xl mx-auto hidden md:block">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border/40">
@@ -71,7 +125,7 @@ const Planos = () => (
             <td className="pt-6" />
             {planos.map((p) => (
               <td key={p.nome} className="text-center pt-6 px-3">
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                <a href={getWhatsAppLink(p.msg)} target="_blank" rel="noopener noreferrer">
                   <Button className={cn("font-semibold text-[12px] h-9 px-5 w-full rounded-lg", !p.destaque && "bg-transparent border border-border text-foreground hover:bg-accent")}>
                     Começar
                   </Button>
