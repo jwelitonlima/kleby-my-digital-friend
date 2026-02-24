@@ -1,17 +1,23 @@
 import { Link } from "react-router-dom";
+import { useTheme } from "next-themes";
 import { Instagram, Mail, MessageCircle } from "lucide-react";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
+import logoDark from "@/assets/logo-dark.png";
+import logoLight from "@/assets/logo-light.png";
 
 export function Footer() {
+  const { theme } = useTheme();
   return (
     <footer className="border-t border-border bg-card">
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
-            <h3 className="font-heading font-bold text-lg mb-3">
-              <span className="text-primary">K</span> Kléby Almeida
-            </h3>
+            <img
+              src={theme === "dark" ? logoDark : logoLight}
+              alt="Kléby Almeida"
+              className="h-12 w-auto mb-3"
+            />
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               Método, consistência e acompanhamento. Evolua com segurança e estratégia.
             </p>
