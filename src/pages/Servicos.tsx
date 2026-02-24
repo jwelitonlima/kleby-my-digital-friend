@@ -1,140 +1,50 @@
 import { useState } from "react";
 import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/components/Section";
-import { ChevronDown } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const servicos = [
-  {
-    title: "Personal Presencial",
-    para: "Quem busca acompanhamento direto e correção em tempo real.",
-    como: "Treinos presenciais individuais, com planejamento semanal e progressão contínua.",
-    entregas: "Avaliação, planilha de treino, ajustes semanais.",
-    frequencia: "2 a 5x por semana",
-    msg: "Olá, Kléby! Tenho interesse no serviço de Personal Presencial.",
-  },
-  {
-    title: "Consultoria Online",
-    para: "Quem treina por conta mas quer um plano profissional.",
-    como: "Planilha de treino personalizada, vídeos de execução e acompanhamento remoto.",
-    entregas: "Planilha digital, suporte por mensagem, ajustes mensais.",
-    frequencia: "Planos mensais ou trimestrais",
-    msg: "Olá, Kléby! Tenho interesse na Consultoria Online.",
-  },
-  {
-    title: "Avaliação Física",
-    para: "Quem quer medir seu ponto de partida e acompanhar a evolução.",
-    como: "Avaliação antropométrica, testes funcionais e relatório completo.",
-    entregas: "Relatório detalhado, fotos comparativas, metas iniciais.",
-    frequencia: "Avaliação unitária ou periódica",
-    msg: "Olá, Kléby! Quero agendar uma Avaliação Física.",
-  },
-  {
-    title: "Treino para Emagrecimento",
-    para: "Quem busca perda de gordura com saúde e sem dietas malucas.",
-    como: "Combinação de treino resistido e metabólico, com orientações de rotina.",
-    entregas: "Plano de treino, orientação alimentar básica, check-ins.",
-    frequencia: "3 a 5x por semana",
-    msg: "Olá, Kléby! Quero saber mais sobre o Treino para Emagrecimento.",
-  },
-  {
-    title: "Hipertrofia",
-    para: "Quem quer ganhar massa muscular de forma eficiente.",
-    como: "Periodização focada em volume e intensidade, com ajustes frequentes.",
-    entregas: "Planilha progressiva, suporte técnico, ajustes quinzenais.",
-    frequencia: "4 a 6x por semana",
-    msg: "Olá, Kléby! Quero saber sobre o treino de Hipertrofia.",
-  },
-  {
-    title: "Condicionamento e Saúde",
-    para: "Quem busca qualidade de vida, mobilidade e disposição.",
-    como: "Treinos adaptados com foco em funcionalidade, equilíbrio e bem-estar.",
-    entregas: "Plano de treino funcional, acompanhamento, ajustes mensais.",
-    frequencia: "2 a 4x por semana",
-    msg: "Olá, Kléby! Quero saber mais sobre Condicionamento e Saúde.",
-  },
+  { title: "Personal Presencial", desc: "Treinos individuais com planejamento semanal e progressão contínua.", msg: "Olá, Kléby! Tenho interesse no Personal Presencial." },
+  { title: "Consultoria Online", desc: "Planilha personalizada, vídeos de execução e acompanhamento remoto.", msg: "Olá, Kléby! Tenho interesse na Consultoria Online." },
+  { title: "Avaliação Física", desc: "Avaliação antropométrica, testes funcionais e relatório completo.", msg: "Olá, Kléby! Quero agendar uma Avaliação Física." },
+  { title: "Emagrecimento", desc: "Treino resistido e metabólico com orientações de rotina.", msg: "Olá, Kléby! Quero saber sobre Emagrecimento." },
+  { title: "Hipertrofia", desc: "Periodização focada em volume e intensidade com ajustes frequentes.", msg: "Olá, Kléby! Quero saber sobre Hipertrofia." },
+  { title: "Condicionamento", desc: "Treinos adaptados com foco em funcionalidade e bem-estar.", msg: "Olá, Kléby! Quero saber sobre Condicionamento." },
 ];
 
 function ServiceItem({ item }: { item: typeof servicos[0] }) {
-  const [isOpen, setIsOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-border/50">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-6 md:py-7 text-left group"
-      >
-        <h3 className="text-lg md:text-xl font-semibold group-hover:text-primary transition-colors duration-200">
-          {item.title}
-        </h3>
-        <ChevronDown
-          size={16}
-          className={cn(
-            "text-muted-foreground transition-transform duration-300 flex-shrink-0 ml-4",
-            isOpen && "rotate-180"
-          )}
-        />
-      </button>
-      <div
-        className={cn(
-          "overflow-hidden transition-all duration-400 ease-out",
-          isOpen ? "max-h-[500px] pb-7" : "max-h-0"
-        )}
-      >
-        <div className="grid md:grid-cols-4 gap-6 text-sm text-muted-foreground">
-          <div>
-            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
-              Para quem
-            </span>
-            {item.para}
-          </div>
-          <div>
-            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
-              Como funciona
-            </span>
-            {item.como}
-          </div>
-          <div>
-            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
-              Entregas
-            </span>
-            {item.entregas}
-          </div>
-          <div>
-            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
-              Frequência
-            </span>
-            <p className="mb-4">{item.frequencia}</p>
-            <a
-              href={`https://wa.me/5589988038518?text=${encodeURIComponent(item.msg)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="text-primary text-[13px] font-semibold hover:underline transition-colors">
-                Quero este serviço →
-              </span>
-            </a>
-          </div>
-        </div>
+    <div className="border-b border-border/40 cursor-pointer group" onClick={() => setOpen(!open)}>
+      <div className="flex items-center justify-between py-5 md:py-6">
+        <h3 className="text-title group-hover:text-primary transition-colors duration-200">{item.title}</h3>
+        <ChevronRight size={16} className={cn("text-muted-foreground transition-transform duration-300", open && "rotate-90")} />
+      </div>
+      <div className={cn("overflow-hidden transition-all duration-400", open ? "max-h-40 pb-5" : "max-h-0")}>
+        <p className="text-sm text-muted-foreground leading-relaxed mb-3 max-w-md">{item.desc}</p>
+        <a
+          href={`https://wa.me/5589988038518?text=${encodeURIComponent(item.msg)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="text-primary text-[13px] font-semibold hover:underline"
+        >
+          Quero este serviço →
+        </a>
       </div>
     </div>
   );
 }
 
-const Servicos = () => {
-  return (
-    <Section>
-      <SectionLabel>Serviços</SectionLabel>
-      <SectionTitle>Soluções personalizadas para cada objetivo</SectionTitle>
-      <SectionSubtitle className="mb-12">
-        Do presencial ao online. Sempre com método, ciência e personalização.
-      </SectionSubtitle>
-      <div>
-        {servicos.map((s, i) => (
-          <ServiceItem key={i} item={s} />
-        ))}
-      </div>
-    </Section>
-  );
-};
+const Servicos = () => (
+  <Section>
+    <SectionLabel>Serviços</SectionLabel>
+    <SectionTitle>Soluções para cada objetivo</SectionTitle>
+    <SectionSubtitle className="mb-10">Do presencial ao online. Sempre com método.</SectionSubtitle>
+    <div className="max-w-lg">
+      {servicos.map((s, i) => <ServiceItem key={i} item={s} />)}
+    </div>
+  </Section>
+);
 
 export default Servicos;
