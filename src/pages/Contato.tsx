@@ -1,19 +1,17 @@
 import { useState } from "react";
-import { Section, SectionTitle, SectionSubtitle } from "@/components/Section";
-import { Card, CardContent } from "@/components/ui/card";
+import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/components/Section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { MessageCircle, Instagram, Mail, MapPin } from "lucide-react";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 const contatos = [
-  { icon: MessageCircle, label: "WhatsApp (principal)", href: WHATSAPP_LINK },
-  { icon: Instagram, label: "Instagram", href: INSTAGRAM_LINK },
-  { icon: Mail, label: EMAIL, href: `mailto:${EMAIL}` },
-  { icon: MapPin, label: "Picos, PI (presencial)", href: "#" },
+  { label: "WhatsApp", sublabel: "Principal", href: WHATSAPP_LINK },
+  { label: "Instagram", sublabel: "@klebyalmeida", href: INSTAGRAM_LINK },
+  { label: "E-mail", sublabel: EMAIL, href: `mailto:${EMAIL}` },
+  { label: "Local", sublabel: "Picos, PI (presencial)", href: "#" },
 ];
 
 const Contato = () => {
@@ -28,86 +26,96 @@ const Contato = () => {
 
   return (
     <Section>
-      <div className="grid md:grid-cols-2 gap-12">
+      <div className="grid lg:grid-cols-2 gap-20">
         {/* Info */}
         <div>
-          <SectionTitle>Contato</SectionTitle>
-          <SectionSubtitle className="mb-8">
-            Vamos conversar sobre seu objetivo. Escolha o canal que preferir.
+          <SectionLabel>Contato</SectionLabel>
+          <SectionTitle>Vamos conversar</SectionTitle>
+          <SectionSubtitle className="mb-12">
+            Escolha o canal que preferir. Estou pronto para ajudar.
           </SectionSubtitle>
-          <div className="space-y-4">
+          <div className="space-y-0">
             {contatos.map((c, i) => (
               <a
                 key={i}
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/30 transition-colors group"
+                className="flex items-center justify-between py-5 border-b border-border/40 group hover:text-primary transition-colors"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <c.icon size={18} className="text-primary" />
-                </div>
-                <span className="text-sm font-medium">{c.label}</span>
+                <span className="text-base font-heading font-light">{c.label}</span>
+                <span className="text-[13px] text-muted-foreground group-hover:text-primary/70 transition-colors">
+                  {c.sublabel}
+                </span>
               </a>
             ))}
           </div>
         </div>
 
         {/* Form */}
-        <Card>
-          <CardContent className="p-6 md:p-8">
-            <h3 className="font-heading font-semibold text-lg mb-6">Enviar mensagem</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="nome">Nome</Label>
-                <Input
-                  id="nome"
-                  value={form.nome}
-                  onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                  required
-                />
+        <div>
+          <h3 className="text-xl font-heading font-light mb-8">Enviar mensagem</h3>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+                Nome
+              </label>
+              <Input
+                value={form.nome}
+                onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                required
+                className="rounded-none border-border/60 h-11"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+                Objetivo
+              </label>
+              <Input
+                placeholder="Ex: Emagrecimento, hipertrofia..."
+                value={form.objetivo}
+                onChange={(e) => setForm({ ...form, objetivo: e.target.value })}
+                className="rounded-none border-border/60 h-11"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+                Preferência
+              </label>
+              <div className="flex gap-3 mt-1">
+                {["Online", "Presencial"].map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    className={cn(
+                      "px-5 py-2.5 text-[13px] font-body font-medium border transition-colors",
+                      form.preferencia === opt
+                        ? "border-primary text-primary bg-primary/5"
+                        : "border-border/60 text-muted-foreground hover:border-foreground hover:text-foreground"
+                    )}
+                    onClick={() => setForm({ ...form, preferencia: opt })}
+                  >
+                    {opt}
+                  </button>
+                ))}
               </div>
-              <div>
-                <Label htmlFor="objetivo">Objetivo</Label>
-                <Input
-                  id="objetivo"
-                  placeholder="Ex: Emagrecimento, hipertrofia..."
-                  value={form.objetivo}
-                  onChange={(e) => setForm({ ...form, objetivo: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="preferencia">Preferência</Label>
-                <div className="flex gap-3 mt-1">
-                  {["Online", "Presencial"].map((opt) => (
-                    <Button
-                      key={opt}
-                      type="button"
-                      variant={form.preferencia === opt ? "default" : "outline"}
-                      size="sm"
-                      className="rounded-full text-xs font-heading"
-                      onClick={() => setForm({ ...form, preferencia: opt })}
-                    >
-                      {opt}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="mensagem">Mensagem</Label>
-                <Textarea
-                  id="mensagem"
-                  rows={4}
-                  value={form.mensagem}
-                  onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
-                />
-              </div>
-              <Button type="submit" className="w-full rounded-full font-heading font-semibold">
-                Enviar
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            </div>
+            <div>
+              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+                Mensagem
+              </label>
+              <Textarea
+                rows={4}
+                value={form.mensagem}
+                onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
+                className="rounded-none border-border/60 resize-none"
+              />
+            </div>
+            <Button type="submit" className="rounded-none font-body font-medium tracking-wide h-11 px-8 text-sm">
+              Enviar
+            </Button>
+          </form>
+        </div>
       </div>
     </Section>
   );

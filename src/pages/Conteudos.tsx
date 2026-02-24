@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Section, SectionTitle, SectionSubtitle } from "@/components/Section";
-import { Card, CardContent } from "@/components/ui/card";
+import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/components/Section";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface BlogPost {
   slug: string;
@@ -64,63 +62,84 @@ const Conteudos = () => {
     return matchBusca && matchCategoria;
   });
 
+  const featured = filtered[0];
+  const rest = filtered.slice(1);
+
   return (
     <Section>
-      <SectionTitle>Conteúdos</SectionTitle>
-      <SectionSubtitle className="mb-8">
-        Artigos sobre treino, nutrição, rotina e mindset para sua evolução.
+      <SectionLabel>Conteúdos</SectionLabel>
+      <SectionTitle>Artigos e reflexões</SectionTitle>
+      <SectionSubtitle className="mb-10">
+        Treino, nutrição, rotina e mindset para sua evolução.
       </SectionSubtitle>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-10">
-        <div className="relative flex-1 max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Buscar artigo..."
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-        <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-col sm:flex-row gap-4 mb-14 border-b border-border/40 pb-6">
+        <Input
+          placeholder="Buscar artigo..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          className="max-w-xs rounded-none border-border/60 text-sm h-10"
+        />
+        <div className="flex gap-3 flex-wrap">
           {categorias.map((cat) => (
-            <Button
+            <button
               key={cat}
-              variant={categoria === cat ? "default" : "outline"}
-              size="sm"
-              className="rounded-full text-xs font-heading"
+              className={cn(
+                "text-[13px] font-body font-medium transition-colors pb-0.5",
+                categoria === cat
+                  ? "text-foreground border-b border-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
               onClick={() => setCategoria(cat)}
             >
               {cat}
-            </Button>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Posts */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        {filtered.map((post) => (
-          <Link key={post.slug} to={`/conteudos/${post.slug}`}>
-            <Card className="h-full hover:border-primary/30 transition-colors group">
-              <CardContent className="p-6">
-                <span className="text-xs text-primary font-heading font-semibold uppercase tracking-wider">
+      {/* Editorial layout */}
+      {featured && (
+        <div className="grid lg:grid-cols-3 gap-8 mb-12">
+          {/* Featured post */}
+          <Link to={`/conteudos/${featured.slug}`} className="lg:col-span-2 group">
+            <div className="aspect-[16/9] bg-muted border border-border/40 flex items-center justify-center mb-6">
+              <p className="text-xs text-muted-foreground">Imagem de capa</p>
+            </div>
+            <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary">
+              {featured.categoria}
+            </span>
+            <h3 className="text-2xl md:text-3xl font-heading font-light mt-2 mb-3 group-hover:text-primary transition-colors duration-300">
+              {featured.title}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">{featured.resumo}</p>
+            <span className="text-[12px] text-muted-foreground/60 mt-3 block">{featured.data}</span>
+          </Link>
+
+          {/* Side list */}
+          <div className="space-y-0">
+            {rest.map((post) => (
+              <Link
+                key={post.slug}
+                to={`/conteudos/${post.slug}`}
+                className="block py-5 border-b border-border/40 last:border-b-0 group"
+              >
+                <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary/60">
                   {post.categoria}
                 </span>
-                <h3 className="font-heading font-semibold text-lg mt-2 mb-2 group-hover:text-primary transition-colors">
+                <h4 className="text-base font-heading font-light mt-1 mb-1 group-hover:text-primary transition-colors duration-300">
                   {post.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  {post.resumo}
-                </p>
-                <span className="text-xs text-muted-foreground">{post.data}</span>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
+                </h4>
+                <p className="text-[13px] text-muted-foreground line-clamp-2">{post.resumo}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted-foreground py-12">
+        <p className="text-center text-muted-foreground py-16 text-sm">
           Nenhum artigo encontrado.
         </p>
       )}

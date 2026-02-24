@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "next-themes";
-import { Instagram, Mail, MessageCircle } from "lucide-react";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
 import logoDark from "@/assets/logo-dark.png";
 import logoLight from "@/assets/logo-light.png";
@@ -8,30 +7,32 @@ import logoLight from "@/assets/logo-light.png";
 export function Footer() {
   const { theme } = useTheme();
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="container py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    <footer className="border-t border-border/40">
+      <div className="container py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
             <img
               src={theme === "dark" ? logoDark : logoLight}
               alt="Kléby Almeida"
-              className="h-12 w-auto mb-3"
+              className="h-8 w-auto mb-4"
             />
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Método, consistência e acompanhamento. Evolua com segurança e estratégia.
+            <p className="text-[13px] text-muted-foreground leading-relaxed max-w-xs">
+              Método, consistência e acompanhamento.
+              <br />
+              Evolua com segurança e estratégia.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-heading font-semibold text-sm uppercase tracking-wider mb-4 text-muted-foreground">
+            <span className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground/60 block mb-5">
               Navegação
-            </h4>
-            <nav className="flex flex-col gap-2">
+            </span>
+            <nav className="flex flex-col gap-3">
               {[
                 { label: "Início", path: "/" },
-                { label: "Sobre", path: "/sobre" },
+                { label: "Método", path: "/sobre" },
                 { label: "Serviços", path: "/servicos" },
                 { label: "Planos", path: "/planos" },
                 { label: "Contato", path: "/contato" },
@@ -39,7 +40,7 @@ export function Footer() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -49,38 +50,38 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-heading font-semibold text-sm uppercase tracking-wider mb-4 text-muted-foreground">
+            <span className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground/60 block mb-5">
               Contato
-            </h4>
+            </span>
             <div className="flex flex-col gap-3">
               <a
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
               >
-                <MessageCircle size={16} /> WhatsApp
+                WhatsApp
               </a>
               <a
                 href={INSTAGRAM_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Instagram size={16} /> Instagram
+                Instagram
               </a>
               <a
                 href={`mailto:${EMAIL}`}
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Mail size={16} /> {EMAIL}
+                {EMAIL}
               </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-border text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Kléby Almeida Personal Trainer. Todos os direitos reservados.
+        <div className="mt-14 pt-6 border-t border-border/30 text-[11px] text-muted-foreground/50">
+          © {new Date().getFullYear()} Kléby Almeida Personal Trainer
         </div>
       </div>
     </footer>
