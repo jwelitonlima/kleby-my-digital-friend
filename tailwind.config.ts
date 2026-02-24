@@ -7,21 +7,22 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "1.5rem",
+      padding: "1.25rem",
       screens: {
-        "2xl": "1200px",
+        "2xl": "1120px",
       },
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
       },
       fontSize: {
-        "display": ["clamp(2.5rem, 5vw, 4rem)", { lineHeight: "1.08", letterSpacing: "-0.03em", fontWeight: "700" }],
-        "display-sm": ["clamp(1.75rem, 3.5vw, 2.5rem)", { lineHeight: "1.12", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "hero": ["clamp(2.25rem, 5vw, 3.5rem)", { lineHeight: "1.06", letterSpacing: "-0.035em", fontWeight: "700" }],
+        "headline": ["clamp(1.5rem, 3vw, 2.25rem)", { lineHeight: "1.12", letterSpacing: "-0.025em", fontWeight: "700" }],
+        "title": ["clamp(1.125rem, 2vw, 1.5rem)", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" }],
       },
       letterSpacing: {
-        "label": "0.12em",
+        "label": "0.08em",
       },
       colors: {
         border: "hsl(var(--border))",
