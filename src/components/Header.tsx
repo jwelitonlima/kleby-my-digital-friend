@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WHATSAPP_LINK } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,6 @@ export function Header() {
 
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -39,91 +39,24 @@ export function Header() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-200",
-        scrolled
-          ? "bg-background/90 backdrop-blur-xl border-b border-border/40"
-          : "bg-transparent"
-      )}
-      style={{ paddingTop: "env(safe-area-inset-top)" }}
-    >
-      <div className="container flex items-center justify-between h-12 md:h-14">
-        <Link to="/" className="flex items-center relative z-[101]">
-          <img
-            src={theme === "dark" ? logoDark : logoLight}
-            alt="Kléby Almeida"
-            className="h-8 md:h-7 w-auto"
-          />
-        </Link>
-
-        <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                "text-[12px] tracking-wide transition-colors",
-                location.pathname === item.path
-                  ? "text-foreground font-semibold"
-                  : "text-muted-foreground font-normal hover:text-foreground"
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2 relative z-[101]">
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
-            aria-label="Alternar tema"
-          >
-            {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-          </button>
-
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hidden md:block">
-            <Button size="sm" className="text-[12px] font-semibold h-8 px-4 rounded-lg">
-              Iniciar Avaliação
-            </Button>
-          </a>
-
-          <button
-            onClick={() => setOpen(!open)}
-            className="lg:hidden p-2 text-foreground relative w-7 h-7 flex flex-col items-center justify-center"
-            aria-label="Menu"
-          >
-            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200 absolute", open ? "rotate-45" : "-translate-y-1")} />
-            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200", open ? "opacity-0" : "opacity-100")} />
-            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200 absolute", open ? "-rotate-45" : "translate-y-1")} />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile fullscreen overlay */}
-      {open && (
+  const mobileMenu = open
+    ? createPortal(
         <div
-          className="lg:hidden fixed inset-0 z-[9999] bg-background flex flex-col"
-          style={{ 
+          className="lg:hidden fixed inset-0 bg-background flex flex-col"
+          style={{
+            zIndex: 99999,
             paddingTop: "env(safe-area-inset-top)",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            position: "fixed",
             width: "100vw",
             height: "100dvh",
           }}
         >
-          {/* Close bar */}
+          {/* Top bar */}
           <div className="flex items-center justify-between h-12 px-6">
             <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Kléby Almeida"
-                className="h-8 w-auto"
+                className="h-9 w-auto"
               />
             </Link>
             <div className="flex items-center gap-2">
@@ -132,15 +65,14 @@ export function Header() {
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Alternar tema"
               >
-                {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
               </button>
               <button
                 onClick={() => setOpen(false)}
                 className="p-2 text-foreground"
                 aria-label="Fechar menu"
               >
-                <span className="block w-4 h-[1.5px] bg-current rotate-45 absolute" />
-                <span className="block w-4 h-[1.5px] bg-current -rotate-45" />
+                <X size={20} />
               </button>
             </div>
           </div>
@@ -167,8 +99,77 @@ export function Header() {
               </Button>
             </a>
           </nav>
+        </div>,
+        document.body
+      )
+    : null;
+
+  return (
+    <>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-[100] transition-all duration-200",
+          scrolled
+            ? "bg-background/90 backdrop-blur-xl border-b border-border/40"
+            : "bg-transparent"
+        )}
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
+        <div className="container flex items-center justify-between h-12 md:h-14">
+          <Link to="/" className="flex items-center">
+            <img
+              src={theme === "dark" ? logoDark : logoLight}
+              alt="Kléby Almeida"
+              className="h-9 md:h-7 w-auto"
+            />
+          </Link>
+
+          <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "text-[12px] tracking-wide transition-colors",
+                  location.pathname === item.path
+                    ? "text-foreground font-semibold"
+                    : "text-muted-foreground font-normal hover:text-foreground"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
+              aria-label="Alternar tema"
+            >
+              {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
+
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hidden md:block">
+              <Button size="sm" className="text-[12px] font-semibold h-8 px-4 rounded-lg">
+                Iniciar Avaliação
+              </Button>
+            </a>
+
+            <button
+              onClick={() => setOpen(!open)}
+              className="lg:hidden p-2 text-foreground relative w-7 h-7 flex flex-col items-center justify-center"
+              aria-label="Menu"
+            >
+              <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200 absolute", open ? "rotate-45" : "-translate-y-1")} />
+              <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200", open ? "opacity-0" : "opacity-100")} />
+              <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200 absolute", open ? "-rotate-45" : "translate-y-1")} />
+            </button>
+          </div>
         </div>
-      )}
-    </header>
+      </header>
+
+      {mobileMenu}
+    </>
   );
 }
