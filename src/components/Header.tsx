@@ -56,7 +56,7 @@ export function Header() {
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Kléby Almeida"
-                className="h-9 w-auto"
+                className="h-12 w-auto"
               />
             </Link>
             <div className="flex items-center gap-2">
@@ -115,12 +115,12 @@ export function Header() {
         )}
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
-        <div className="container flex items-center justify-between h-12 md:h-14">
+        <div className="container flex items-center justify-between h-16 md:h-14">
           <Link to="/" className="flex items-center">
             <img
               src={theme === "dark" ? logoDark : logoLight}
               alt="Kléby Almeida"
-              className="h-9 md:h-7 w-auto"
+              className="h-12 md:h-7 w-auto"
             />
           </Link>
 
