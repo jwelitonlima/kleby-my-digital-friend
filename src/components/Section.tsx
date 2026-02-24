@@ -15,7 +15,7 @@ export function Section({ children, className, id }: SectionProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-      className={cn("py-20 md:py-32", className)}
+      className={cn("py-20 md:py-28", className)}
     >
       <div className="container">{children}</div>
     </motion.section>
@@ -24,7 +24,7 @@ export function Section({ children, className, id }: SectionProps) {
 
 export function SectionLabel({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className={cn("text-[11px] font-body font-medium tracking-label uppercase text-primary block mb-6", className)}>
+    <span className={cn("text-[11px] font-medium tracking-label uppercase text-primary block mb-5", className)}>
       {children}
     </span>
   );
@@ -32,7 +32,7 @@ export function SectionLabel({ children, className }: { children: React.ReactNod
 
 export function SectionTitle({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={cn("text-display-sm font-heading font-light tracking-tight mb-5 text-balance", className)}>
+    <h2 className={cn("text-display-sm tracking-tight mb-4 text-balance", className)}>
       {children}
     </h2>
   );

@@ -69,7 +69,7 @@ const planFeatures: Record<string, boolean[]> = {
 const Planos = () => {
   return (
     <Section>
-      <div className="text-center mb-16">
+      <div className="text-center mb-14">
         <SectionLabel className="text-center">Planos</SectionLabel>
         <SectionTitle className="text-center">Escolha seu plano</SectionTitle>
         <SectionSubtitle className="mx-auto text-center">
@@ -77,18 +77,17 @@ const Planos = () => {
         </SectionSubtitle>
       </div>
 
-      {/* Comparison table */}
       <div className="max-w-4xl mx-auto overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border/40">
-              <th className="text-left py-4 pr-4 font-body font-normal text-muted-foreground text-[13px]" />
+            <tr className="border-b border-border/50">
+              <th className="text-left py-4 pr-4 font-normal text-muted-foreground text-[13px]" />
               {planos.map((p) => (
                 <th key={p.nome} className="text-center py-4 px-4 min-w-[140px]">
-                  <div className="font-heading font-light text-xl mb-1">{p.nome}</div>
-                  <div className="text-[11px] text-muted-foreground font-body font-normal">{p.frequencia}</div>
+                  <div className="font-bold text-xl mb-1">{p.nome}</div>
+                  <div className="text-[11px] text-muted-foreground font-normal">{p.frequencia}</div>
                   {p.destaque && (
-                    <span className="inline-block mt-2 text-[10px] font-body font-medium tracking-label uppercase text-primary">
+                    <span className="inline-block mt-2 text-[10px] font-semibold tracking-label uppercase text-primary">
                       Recomendado
                     </span>
                   )}
@@ -99,11 +98,11 @@ const Planos = () => {
           <tbody>
             {features.map((f, i) => (
               <tr key={i} className="border-b border-border/20">
-                <td className="py-3.5 pr-4 text-[13px] text-muted-foreground">{f}</td>
+                <td className="py-3 pr-4 text-[13px] text-muted-foreground">{f}</td>
                 {planos.map((p) => (
-                  <td key={p.nome} className="text-center py-3.5 px-4">
+                  <td key={p.nome} className="text-center py-3 px-4">
                     {planFeatures[p.nome][i] ? (
-                      <span className="text-primary text-sm">✓</span>
+                      <span className="text-primary text-sm font-bold">✓</span>
                     ) : (
                       <span className="text-border">—</span>
                     )}
@@ -120,7 +119,7 @@ const Planos = () => {
                   <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
                     <Button
                       className={cn(
-                        "rounded-none font-body font-medium tracking-wide text-xs h-10 px-6 w-full",
+                        "font-semibold tracking-wide text-xs h-10 px-6 w-full rounded-md",
                         !p.destaque && "bg-transparent border border-border text-foreground hover:bg-muted"
                       )}
                     >

@@ -73,22 +73,21 @@ const Conteudos = () => {
         Treino, nutrição, rotina e mindset para sua evolução.
       </SectionSubtitle>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-14 border-b border-border/40 pb-6">
+      <div className="flex flex-col sm:flex-row gap-4 mb-12 border-b border-border/50 pb-5">
         <Input
           placeholder="Buscar artigo..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className="max-w-xs rounded-none border-border/60 text-sm h-10"
+          className="max-w-xs rounded-md border-border/60 text-sm h-10"
         />
         <div className="flex gap-3 flex-wrap">
           {categorias.map((cat) => (
             <button
               key={cat}
               className={cn(
-                "text-[13px] font-body font-medium transition-colors pb-0.5",
+                "text-[13px] font-medium transition-colors pb-0.5",
                 categoria === cat
-                  ? "text-foreground border-b border-foreground"
+                  ? "text-foreground border-b-2 border-primary"
                   : "text-muted-foreground hover:text-foreground"
               )}
               onClick={() => setCategoria(cat)}
@@ -99,25 +98,22 @@ const Conteudos = () => {
         </div>
       </div>
 
-      {/* Editorial layout */}
       {featured && (
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
-          {/* Featured post */}
           <Link to={`/conteudos/${featured.slug}`} className="lg:col-span-2 group">
-            <div className="aspect-[16/9] bg-muted border border-border/40 flex items-center justify-center mb-6">
+            <div className="aspect-[16/9] bg-muted rounded-lg flex items-center justify-center mb-5">
               <p className="text-xs text-muted-foreground">Imagem de capa</p>
             </div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-primary">
               {featured.categoria}
             </span>
-            <h3 className="text-2xl md:text-3xl font-heading font-light mt-2 mb-3 group-hover:text-primary transition-colors duration-300">
+            <h3 className="text-xl md:text-2xl font-bold mt-2 mb-2 group-hover:text-primary transition-colors duration-200">
               {featured.title}
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">{featured.resumo}</p>
             <span className="text-[12px] text-muted-foreground/60 mt-3 block">{featured.data}</span>
           </Link>
 
-          {/* Side list */}
           <div className="space-y-0">
             {rest.map((post) => (
               <Link
@@ -125,10 +121,10 @@ const Conteudos = () => {
                 to={`/conteudos/${post.slug}`}
                 className="block py-5 border-b border-border/40 last:border-b-0 group"
               >
-                <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary/60">
+                <span className="text-[11px] font-semibold tracking-label uppercase text-primary/60">
                   {post.categoria}
                 </span>
-                <h4 className="text-base font-heading font-light mt-1 mb-1 group-hover:text-primary transition-colors duration-300">
+                <h4 className="text-base font-semibold mt-1 mb-1 group-hover:text-primary transition-colors duration-200">
                   {post.title}
                 </h4>
                 <p className="text-[13px] text-muted-foreground line-clamp-2">{post.resumo}</p>
