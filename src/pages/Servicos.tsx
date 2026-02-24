@@ -58,16 +58,16 @@ function ServiceItem({ item }: { item: typeof servicos[0] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-border/40">
+    <div className="border-b border-border/50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-7 md:py-9 text-left group"
+        className="w-full flex items-center justify-between py-6 md:py-7 text-left group"
       >
-        <h3 className="text-xl md:text-2xl font-heading font-light group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-lg md:text-xl font-semibold group-hover:text-primary transition-colors duration-200">
           {item.title}
         </h3>
         <ChevronDown
-          size={18}
+          size={16}
           className={cn(
             "text-muted-foreground transition-transform duration-300 flex-shrink-0 ml-4",
             isOpen && "rotate-180"
@@ -76,31 +76,31 @@ function ServiceItem({ item }: { item: typeof servicos[0] }) {
       </button>
       <div
         className={cn(
-          "overflow-hidden transition-all duration-500 ease-out",
-          isOpen ? "max-h-[500px] pb-9" : "max-h-0"
+          "overflow-hidden transition-all duration-400 ease-out",
+          isOpen ? "max-h-[500px] pb-7" : "max-h-0"
         )}
       >
         <div className="grid md:grid-cols-4 gap-6 text-sm text-muted-foreground">
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Para quem
             </span>
             {item.para}
           </div>
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Como funciona
             </span>
             {item.como}
           </div>
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Entregas
             </span>
             {item.entregas}
           </div>
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Frequência
             </span>
             <p className="mb-4">{item.frequencia}</p>
@@ -109,7 +109,7 @@ function ServiceItem({ item }: { item: typeof servicos[0] }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="text-primary text-[13px] font-medium border-b border-primary/40 hover:border-primary transition-colors pb-0.5">
+              <span className="text-primary text-[13px] font-semibold hover:underline transition-colors">
                 Quero este serviço →
               </span>
             </a>
@@ -125,7 +125,7 @@ const Servicos = () => {
     <Section>
       <SectionLabel>Serviços</SectionLabel>
       <SectionTitle>Soluções personalizadas para cada objetivo</SectionTitle>
-      <SectionSubtitle className="mb-14">
+      <SectionSubtitle className="mb-12">
         Do presencial ao online. Sempre com método, ciência e personalização.
       </SectionSubtitle>
       <div>

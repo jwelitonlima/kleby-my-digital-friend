@@ -11,10 +11,7 @@ const BlogPost = () => {
       <Section>
         <p className="text-center text-muted-foreground">Artigo não encontrado.</p>
         <div className="text-center mt-6">
-          <Link
-            to="/conteudos"
-            className="text-sm text-muted-foreground hover:text-foreground border-b border-muted-foreground/30 pb-0.5 transition-colors"
-          >
+          <Link to="/conteudos" className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors">
             ← Voltar aos conteúdos
           </Link>
         </div>
@@ -27,18 +24,18 @@ const BlogPost = () => {
       <div className="max-w-2xl mx-auto">
         <Link
           to="/conteudos"
-          className="text-[13px] text-muted-foreground hover:text-foreground border-b border-muted-foreground/30 hover:border-foreground pb-0.5 transition-colors mb-12 inline-block"
+          className="text-[13px] text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors mb-10 inline-block"
         >
           ← Voltar aos conteúdos
         </Link>
 
-        <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary block mb-4">
+        <span className="text-[11px] font-semibold tracking-label uppercase text-primary block mb-4">
           {post.categoria}
         </span>
-        <h1 className="text-display-sm font-heading font-light tracking-tight mb-4">
+        <h1 className="text-display-sm tracking-tight mb-4">
           {post.title}
         </h1>
-        <p className="text-[13px] text-muted-foreground mb-12">{post.data}</p>
+        <p className="text-[13px] text-muted-foreground mb-10">{post.data}</p>
 
         <div className="space-y-5">
           {post.conteudo.split("\n\n").map((p, i) => (
@@ -48,7 +45,7 @@ const BlogPost = () => {
               dangerouslySetInnerHTML={{
                 __html: p.replace(
                   /\*\*(.*?)\*\*/g,
-                  '<strong class="text-foreground font-medium">$1</strong>'
+                  '<strong class="text-foreground font-semibold">$1</strong>'
                 ),
               }}
             />

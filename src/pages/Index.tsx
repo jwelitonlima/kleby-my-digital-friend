@@ -4,15 +4,13 @@ import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/componen
 import { WHATSAPP_LINK, INSTAGRAM_LINK } from "@/lib/constants";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, User } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { User } from "lucide-react";
 
 const metodo = [
-  { num: "01", title: "Avaliação e meta", desc: "Entendemos seu corpo, rotina e objetivo para traçar um caminho claro." },
-  { num: "02", title: "Plano e execução", desc: "Treino personalizado, progressivo e adaptado à sua realidade." },
-  { num: "03", title: "Ajustes e progressão", desc: "Revisão periódica para garantir evolução contínua e segura." },
-  { num: "04", title: "Resultado sustentável", desc: "Constância e método que se transformam em hábito de vida." },
+  { num: "01", title: "Avaliação", desc: "Entendemos seu corpo, rotina e objetivo." },
+  { num: "02", title: "Planejamento", desc: "Treino personalizado e progressivo." },
+  { num: "03", title: "Execução", desc: "Acompanhamento constante com ajustes." },
 ];
 
 const servicos = [
@@ -47,8 +45,8 @@ const servicos = [
 ];
 
 const depoimentos = [
-  { nome: "Ana S.", texto: "Em 6 meses, transformei meu corpo e minha relação com o exercício. O Kléby é excepcional." },
-  { nome: "Rafael M.", texto: "O acompanhamento faz toda a diferença. Nunca tive tanta consistência nos treinos." },
+  { nome: "Ana S.", texto: "Em 6 meses, transformei meu corpo e minha relação com o exercício." },
+  { nome: "Rafael M.", texto: "Nunca tive tanta consistência nos treinos. O acompanhamento faz toda a diferença." },
   { nome: "Juliana C.", texto: "Treino que cabe na minha rotina e resultados que eu nunca imaginei alcançar." },
   { nome: "Pedro L.", texto: "Profissional sério, método claro e evolução visível a cada mês." },
 ];
@@ -57,16 +55,16 @@ function ServiceAccordion({ item }: { item: typeof servicos[0] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-border/40">
+    <div className="border-b border-border/50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-6 md:py-8 text-left group"
+        className="w-full flex items-center justify-between py-6 md:py-7 text-left group"
       >
-        <h3 className="text-xl md:text-2xl font-heading font-light group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-lg md:text-xl font-semibold group-hover:text-primary transition-colors duration-200">
           {item.title}
         </h3>
         <ChevronDown
-          size={18}
+          size={16}
           className={cn(
             "text-muted-foreground transition-transform duration-300 flex-shrink-0 ml-4",
             isOpen && "rotate-180"
@@ -75,25 +73,25 @@ function ServiceAccordion({ item }: { item: typeof servicos[0] }) {
       </button>
       <div
         className={cn(
-          "overflow-hidden transition-all duration-500 ease-out",
-          isOpen ? "max-h-96 pb-8" : "max-h-0"
+          "overflow-hidden transition-all duration-400 ease-out",
+          isOpen ? "max-h-96 pb-7" : "max-h-0"
         )}
       >
         <div className="grid md:grid-cols-3 gap-6 text-sm text-muted-foreground">
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Para quem
             </span>
             {item.para}
           </div>
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Como funciona
             </span>
             {item.como}
           </div>
           <div>
-            <span className="text-[11px] font-body font-medium tracking-label uppercase text-foreground block mb-2">
+            <span className="text-[11px] font-semibold tracking-label uppercase text-foreground block mb-2">
               Entregas
             </span>
             <p className="mb-4">{item.entregas}</p>
@@ -102,7 +100,7 @@ function ServiceAccordion({ item }: { item: typeof servicos[0] }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="text-primary text-[13px] font-medium border-b border-primary/40 hover:border-primary transition-colors pb-0.5">
+              <span className="text-primary text-[13px] font-semibold hover:underline transition-colors">
                 Quero este serviço →
               </span>
             </a>
@@ -114,41 +112,39 @@ function ServiceAccordion({ item }: { item: typeof servicos[0] }) {
 }
 
 const Home = () => {
-  const [depIdx, setDepIdx] = useState(0);
-
   return (
     <>
       {/* Hero */}
-      <section className="relative min-h-[85vh] flex items-center">
+      <section className="relative min-h-[90vh] flex items-center">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="max-w-lg"
             >
-              <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary mb-8 block">
-                Personal Trainer
+              <span className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground mb-6 block">
+                Personal Trainer · Picos, PI
               </span>
-              <h1 className="text-display font-heading font-light mb-8">
-                Treino com método.{" "}
-                <br className="hidden sm:block" />
-                Corpo com <span className="text-primary italic">estratégia</span>.
+              <h1 className="text-display mb-6">
+                Método. Constância.{" "}
+                <span className="text-primary">Resultado.</span>
               </h1>
               <p className="text-muted-foreground text-base md:text-lg max-w-md mb-10 leading-relaxed">
-                Acompanhamento personalizado para evolução com segurança e constância.
+                Acompanhamento personalizado para evolução com segurança e estratégia.
               </p>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-5">
                 <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                  <Button className="rounded-none font-body font-medium tracking-wide h-12 px-8 text-sm">
+                  <Button className="font-semibold tracking-wide h-12 px-8 text-sm rounded-md">
                     Agendar Avaliação
                   </Button>
                 </a>
                 <Link
                   to="/sobre"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-muted-foreground/30 hover:border-foreground pb-0.5"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4 decoration-muted-foreground/40 hover:decoration-foreground"
                 >
-                  Ver método
+                  Conhecer o método
                 </Link>
               </div>
             </motion.div>
@@ -156,27 +152,25 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
               className="relative hidden lg:block"
             >
-              <div className="aspect-[3/4] max-w-sm ml-auto bg-muted flex items-center justify-center border border-border/40">
+              <div className="aspect-[4/5] w-full max-w-md ml-auto bg-muted rounded-lg overflow-hidden flex items-center justify-center">
                 <div className="text-center p-8">
-                  <div className="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center mx-auto mb-3">
-                    <User size={28} className="text-primary/40" />
+                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                    <User size={24} className="text-primary/50" />
                   </div>
                   <p className="text-xs text-muted-foreground">Foto profissional</p>
                 </div>
               </div>
-              {/* Accent line */}
-              <div className="absolute -bottom-3 -left-3 w-full h-full border border-primary/15 -z-10" />
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Micro-dados strip */}
-      <div className="border-y border-border/40">
-        <div className="container py-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 sm:justify-between text-[13px] text-muted-foreground">
+      {/* Strip */}
+      <div className="border-y border-border/50">
+        <div className="container py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-0 sm:justify-between text-[13px] text-muted-foreground">
           <span>Treino personalizado</span>
           <span className="hidden sm:block w-px h-3 bg-border" />
           <span>Acompanhamento semanal</span>
@@ -185,14 +179,14 @@ const Home = () => {
         </div>
       </div>
 
-      {/* O Método */}
+      {/* O Método — horizontal */}
       <Section>
         <SectionLabel>O Método</SectionLabel>
-        <SectionTitle>Cada etapa pensada para sua evolução</SectionTitle>
-        <SectionSubtitle className="mb-16">
+        <SectionTitle>Três etapas para sua evolução</SectionTitle>
+        <SectionSubtitle className="mb-14">
           Um processo claro, do primeiro treino ao resultado sustentável.
         </SectionSubtitle>
-        <div className="space-y-0">
+        <div className="grid sm:grid-cols-3 gap-8 md:gap-12">
           {metodo.map((item, i) => (
             <motion.div
               key={i}
@@ -200,22 +194,19 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="flex gap-6 md:gap-10 py-8 border-b border-border/40 last:border-b-0"
             >
-              <span className="text-[11px] font-body font-medium tracking-label text-primary/60 pt-1">
+              <span className="text-[11px] font-semibold tracking-label text-primary block mb-3">
                 {item.num}
               </span>
-              <div>
-                <h3 className="text-xl md:text-2xl font-heading font-light mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground max-w-md leading-relaxed">{item.desc}</p>
-              </div>
+              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>
       </Section>
 
       {/* Serviços */}
-      <Section className="border-t border-border/40">
+      <Section className="border-t border-border/50">
         <SectionLabel>Serviços</SectionLabel>
         <SectionTitle>Soluções para cada objetivo</SectionTitle>
         <SectionSubtitle className="mb-12">
@@ -227,36 +218,36 @@ const Home = () => {
           ))}
         </div>
         <div className="mt-10">
-          <Link to="/servicos" className="text-sm text-muted-foreground hover:text-foreground border-b border-muted-foreground/30 hover:border-foreground pb-0.5 transition-colors">
+          <Link to="/servicos" className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 decoration-muted-foreground/40 hover:decoration-foreground transition-colors">
             Ver todos os serviços →
           </Link>
         </div>
       </Section>
 
-      {/* Provas sociais */}
-      <Section className="border-t border-border/40">
+      {/* Resultados */}
+      <Section className="border-t border-border/50">
         <div className="grid lg:grid-cols-2 gap-16">
           <div>
             <SectionLabel>Resultados</SectionLabel>
-            <SectionTitle>Resultados reais de quem treina com método</SectionTitle>
+            <SectionTitle>Quem treina com método, evolui</SectionTitle>
             <SectionSubtitle>
               Depoimentos de alunos que decidiram evoluir com acompanhamento profissional.
             </SectionSubtitle>
           </div>
-          <div className="space-y-8">
+          <div className="space-y-6">
             {depoimentos.map((d, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 6 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="border-l-[1.5px] border-primary/30 pl-6"
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="border-l-2 border-primary/30 pl-5"
               >
-                <p className="text-base leading-relaxed mb-3 font-heading font-light italic text-foreground/90">
-                  {d.texto}
+                <p className="text-[15px] leading-relaxed mb-2 text-foreground/90">
+                  "{d.texto}"
                 </p>
-                <span className="text-[12px] font-body font-medium tracking-wide text-muted-foreground uppercase">
+                <span className="text-[12px] font-semibold tracking-wide text-muted-foreground uppercase">
                   {d.nome}
                 </span>
               </motion.div>
@@ -266,11 +257,11 @@ const Home = () => {
       </Section>
 
       {/* CTA Final */}
-      <section className="border-t border-border/40">
-        <div className="bg-muted/30">
-          <div className="container py-24 md:py-32 text-center max-w-2xl mx-auto">
+      <section className="border-t border-border/50">
+        <div className="bg-muted/40">
+          <div className="container py-24 md:py-28 text-center max-w-2xl mx-auto">
             <SectionLabel className="text-center">Comece agora</SectionLabel>
-            <h2 className="text-display-sm font-heading font-light tracking-tight mb-6">
+            <h2 className="text-display-sm tracking-tight mb-5">
               Pronto para evoluir?
             </h2>
             <p className="text-muted-foreground text-base mb-10 max-w-md mx-auto leading-relaxed">
@@ -278,12 +269,12 @@ const Home = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                <Button className="rounded-none font-body font-medium tracking-wide h-12 px-8 text-sm w-full sm:w-auto">
+                <Button className="font-semibold tracking-wide h-12 px-8 text-sm w-full sm:w-auto rounded-md">
                   Falar no WhatsApp
                 </Button>
               </a>
               <a href={INSTAGRAM_LINK} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="rounded-none font-body font-medium tracking-wide h-12 px-8 text-sm w-full sm:w-auto">
+                <Button variant="outline" className="font-semibold tracking-wide h-12 px-8 text-sm w-full sm:w-auto rounded-md">
                   Seguir no Instagram
                 </Button>
               </a>

@@ -9,20 +9,19 @@ export default {
       center: true,
       padding: "1.5rem",
       screens: {
-        "2xl": "1100px",
+        "2xl": "1200px",
       },
     },
     extend: {
       fontFamily: {
-        heading: ['"Cormorant Garamond"', "Georgia", "serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
       fontSize: {
-        "display": ["clamp(2.5rem, 5vw, 4.5rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
-        "display-sm": ["clamp(2rem, 4vw, 3rem)", { lineHeight: "1.1", letterSpacing: "-0.01em" }],
+        "display": ["clamp(2.5rem, 5vw, 4rem)", { lineHeight: "1.08", letterSpacing: "-0.03em", fontWeight: "700" }],
+        "display-sm": ["clamp(1.75rem, 3.5vw, 2.5rem)", { lineHeight: "1.12", letterSpacing: "-0.02em", fontWeight: "700" }],
       },
       letterSpacing: {
-        "label": "0.15em",
+        "label": "0.12em",
       },
       colors: {
         border: "hsl(var(--border))",

@@ -26,13 +26,12 @@ const Contato = () => {
 
   return (
     <Section>
-      <div className="grid lg:grid-cols-2 gap-20">
-        {/* Info */}
+      <div className="grid lg:grid-cols-2 gap-16">
         <div>
           <SectionLabel>Contato</SectionLabel>
           <SectionTitle>Vamos conversar</SectionTitle>
-          <SectionSubtitle className="mb-12">
-            Escolha o canal que preferir. Estou pronto para ajudar.
+          <SectionSubtitle className="mb-10">
+            Escolha o canal que preferir. Estou pronta para ajudar.
           </SectionSubtitle>
           <div className="space-y-0">
             {contatos.map((c, i) => (
@@ -41,9 +40,9 @@ const Contato = () => {
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between py-5 border-b border-border/40 group hover:text-primary transition-colors"
+                className="flex items-center justify-between py-4 border-b border-border/50 group hover:text-primary transition-colors"
               >
-                <span className="text-base font-heading font-light">{c.label}</span>
+                <span className="text-base font-semibold">{c.label}</span>
                 <span className="text-[13px] text-muted-foreground group-hover:text-primary/70 transition-colors">
                   {c.sublabel}
                 </span>
@@ -52,34 +51,33 @@ const Contato = () => {
           </div>
         </div>
 
-        {/* Form */}
         <div>
-          <h3 className="text-xl font-heading font-light mb-8">Enviar mensagem</h3>
+          <h3 className="text-lg font-bold mb-7">Enviar mensagem</h3>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+              <label className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground block mb-2">
                 Nome
               </label>
               <Input
                 value={form.nome}
                 onChange={(e) => setForm({ ...form, nome: e.target.value })}
                 required
-                className="rounded-none border-border/60 h-11"
+                className="rounded-md border-border/60 h-11"
               />
             </div>
             <div>
-              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+              <label className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground block mb-2">
                 Objetivo
               </label>
               <Input
                 placeholder="Ex: Emagrecimento, hipertrofia..."
                 value={form.objetivo}
                 onChange={(e) => setForm({ ...form, objetivo: e.target.value })}
-                className="rounded-none border-border/60 h-11"
+                className="rounded-md border-border/60 h-11"
               />
             </div>
             <div>
-              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+              <label className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground block mb-2">
                 Preferência
               </label>
               <div className="flex gap-3 mt-1">
@@ -88,7 +86,7 @@ const Contato = () => {
                     key={opt}
                     type="button"
                     className={cn(
-                      "px-5 py-2.5 text-[13px] font-body font-medium border transition-colors",
+                      "px-5 py-2.5 text-[13px] font-medium rounded-md border transition-colors",
                       form.preferencia === opt
                         ? "border-primary text-primary bg-primary/5"
                         : "border-border/60 text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -101,17 +99,17 @@ const Contato = () => {
               </div>
             </div>
             <div>
-              <label className="text-[11px] font-body font-medium tracking-label uppercase text-muted-foreground block mb-2">
+              <label className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground block mb-2">
                 Mensagem
               </label>
               <Textarea
                 rows={4}
                 value={form.mensagem}
                 onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
-                className="rounded-none border-border/60 resize-none"
+                className="rounded-md border-border/60 resize-none"
               />
             </div>
-            <Button type="submit" className="rounded-none font-body font-medium tracking-wide h-11 px-8 text-sm">
+            <Button type="submit" className="font-semibold tracking-wide h-11 px-8 text-sm rounded-md">
               Enviar
             </Button>
           </form>
