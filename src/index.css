@@ -90,26 +90,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased;
-    font-feature-settings: "cv11", "ss01";
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
-  }
-
-  ::selection {
-    background: hsl(152 54% 34% / 0.15);
+    @apply bg-background text-foreground font-sans antialiased;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-
-  .hairline {
-    @apply border-border/60;
-    border-width: 0.5px;
   }
 }
