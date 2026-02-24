@@ -115,7 +115,7 @@ export function Header() {
         )}
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
-        <div className="container flex items-center justify-between h-16 md:h-14">
+        <div className="container flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
             <img
               src={theme === "dark" ? logoDark : logoLight}
