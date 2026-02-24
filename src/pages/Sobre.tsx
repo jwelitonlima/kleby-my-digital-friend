@@ -3,11 +3,9 @@ import { User } from "lucide-react";
 import { motion } from "framer-motion";
 
 const formacoes = [
-  "Bacharel em Educação Física – CREF XXXXX",
-  "Pós-graduação em Treinamento Esportivo",
-  "Certificação em Avaliação Funcional",
-  "Formação em Periodização de Treino",
-  "Curso de Nutrição Aplicada ao Exercício",
+  "CREF 000849-G/PI",
+  "Pós-graduação em Fisiologia do Exercício",
+  "Especialista em Personal Trainer",
 ];
 
 const pilares = [
