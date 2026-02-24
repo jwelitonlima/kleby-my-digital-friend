@@ -13,7 +13,7 @@ const contatos = [
   { icon: MessageCircle, label: "WhatsApp (principal)", href: WHATSAPP_LINK },
   { icon: Instagram, label: "Instagram", href: INSTAGRAM_LINK },
   { icon: Mail, label: EMAIL, href: `mailto:${EMAIL}` },
-  { icon: MapPin, label: "São Paulo, SP (presencial)", href: "#" },
+  { icon: MapPin, label: "Picos, PI (presencial)", href: "#" },
 ];
 
 const Contato = () => {
