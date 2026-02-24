@@ -11,11 +11,11 @@ export function Section({ children, className, id }: SectionProps) {
   return (
     <motion.section
       id={id}
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-      className={cn("py-16 md:py-24", className)}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className={cn("py-10 md:py-24", className)}
     >
       <div className="container">{children}</div>
     </motion.section>
@@ -24,7 +24,7 @@ export function Section({ children, className, id }: SectionProps) {
 
 export function SectionLabel({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className={cn("text-[11px] font-semibold tracking-label uppercase text-muted-foreground block mb-4", className)}>
+    <span className={cn("text-[11px] font-semibold tracking-label uppercase text-muted-foreground block mb-3 md:mb-4", className)}>
       {children}
     </span>
   );
@@ -32,7 +32,7 @@ export function SectionLabel({ children, className }: { children: React.ReactNod
 
 export function SectionTitle({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={cn("text-headline tracking-tight mb-3", className)}>
+    <h2 className={cn("text-headline tracking-tight mb-2 md:mb-3", className)}>
       {children}
     </h2>
   );
@@ -40,7 +40,7 @@ export function SectionTitle({ children, className }: { children: React.ReactNod
 
 export function SectionSubtitle({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <p className={cn("text-muted-foreground text-[15px] max-w-lg leading-relaxed", className)}>
+    <p className={cn("text-muted-foreground text-[14px] md:text-[15px] max-w-lg leading-relaxed", className)}>
       {children}
     </p>
   );

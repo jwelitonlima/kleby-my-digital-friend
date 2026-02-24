@@ -29,21 +29,32 @@ export function Header() {
 
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-200",
         scrolled
           ? "bg-background/90 backdrop-blur-xl border-b border-border/40"
           : "bg-transparent"
       )}
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      <div className="container flex items-center justify-between h-12 md:h-14">
+      <div className="container flex items-center justify-between h-11 md:h-14">
         <Link to="/" className="flex items-center relative z-50">
           <img
             src={theme === "dark" ? logoDark : logoLight}
             alt="Kléby Almeida"
-            className="h-6 md:h-7 w-auto"
+            className="h-5 md:h-7 w-auto"
           />
         </Link>
 
@@ -84,38 +95,39 @@ export function Header() {
             className="lg:hidden p-2 text-foreground relative w-7 h-7 flex flex-col items-center justify-center"
             aria-label="Menu"
           >
-            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-300 absolute", open ? "rotate-45" : "-translate-y-1")} />
-            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-300", open ? "opacity-0" : "opacity-100")} />
-            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-300 absolute", open ? "-rotate-45" : "translate-y-1")} />
+            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200 absolute", open ? "rotate-45" : "-translate-y-1")} />
+            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200", open ? "opacity-0" : "opacity-100")} />
+            <span className={cn("block w-4 h-[1.5px] bg-current transition-all duration-200 absolute", open ? "-rotate-45" : "translate-y-1")} />
           </button>
         </div>
       </div>
 
-      {/* Mobile overlay */}
+      {/* Mobile fullscreen overlay */}
       <div
         className={cn(
-          "lg:hidden fixed inset-0 bg-background z-40 flex flex-col justify-center transition-all duration-400",
+          "lg:hidden fixed inset-0 bg-background z-40 flex flex-col justify-center transition-all duration-300",
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
-        <nav className="container flex flex-col gap-0">
+        <nav className="px-6 flex flex-col gap-0">
           {navItems.map((item, i) => (
             <Link
               key={item.path}
               to={item.path}
               onClick={() => setOpen(false)}
               className={cn(
-                "text-xl font-semibold py-4 border-b border-border/30 transition-all duration-300",
+                "text-2xl font-semibold py-5 border-b border-border/30 transition-all duration-200",
                 open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
                 location.pathname === item.path ? "text-primary" : "text-foreground"
               )}
-              style={{ transitionDelay: open ? `${i * 40}ms` : "0ms" }}
+              style={{ transitionDelay: open ? `${i * 50}ms` : "0ms" }}
             >
               {item.label}
             </Link>
           ))}
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-8">
-            <Button className="w-full font-semibold h-12 rounded-lg text-sm">
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-10">
+            <Button className="w-full font-semibold h-14 rounded-2xl text-[15px] active:scale-[0.98] transition-transform">
               Iniciar Avaliação
             </Button>
           </a>
