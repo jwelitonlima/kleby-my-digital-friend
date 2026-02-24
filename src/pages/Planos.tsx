@@ -1,8 +1,7 @@
-import { Section, SectionTitle, SectionSubtitle } from "@/components/Section";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/components/Section";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
 import { WHATSAPP_LINK } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 const planos = [
   {
@@ -19,7 +18,7 @@ const planos = [
   },
   {
     nome: "Evolução",
-    desc: "Para quem busca resultados consistentes e acompanhamento próximo.",
+    desc: "Resultados consistentes e acompanhamento próximo.",
     itens: [
       "Tudo do plano Essencial",
       "Ajustes quinzenais de treino",
@@ -32,7 +31,7 @@ const planos = [
   },
   {
     nome: "Performance",
-    desc: "Para quem quer o máximo de personalização e suporte.",
+    desc: "Máxima personalização e suporte dedicado.",
     itens: [
       "Tudo do plano Evolução",
       "Treinos presenciais ou online ao vivo",
@@ -46,57 +45,96 @@ const planos = [
   },
 ];
 
+const features = [
+  "Avaliação física inicial",
+  "Planilha personalizada",
+  "Acompanhamento mensal",
+  "Suporte por mensagem",
+  "Ajustes quinzenais",
+  "Orientação de rotina",
+  "Acompanhamento por vídeo",
+  "Prioridade no suporte",
+  "Treinos ao vivo",
+  "Ajustes semanais",
+  "Relatório mensal",
+  "Periodização avançada",
+];
+
+const planFeatures: Record<string, boolean[]> = {
+  Essencial:    [true, true, true, true, false, false, false, false, false, false, false, false],
+  Evolução:     [true, true, true, true, true, true, true, true, false, false, false, false],
+  Performance:  [true, true, true, true, true, true, true, true, true, true, true, true],
+};
+
 const Planos = () => {
   return (
     <Section>
-      <div className="text-center mb-12">
-        <SectionTitle className="text-center">Planos</SectionTitle>
+      <div className="text-center mb-16">
+        <SectionLabel className="text-center">Planos</SectionLabel>
+        <SectionTitle className="text-center">Escolha seu plano</SectionTitle>
         <SectionSubtitle className="mx-auto text-center">
-          Escolha o plano que se encaixa no seu objetivo e disponibilidade.
+          Cada plano pensado para um momento diferente da sua evolução.
         </SectionSubtitle>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        {planos.map((p, i) => (
-          <Card
-            key={i}
-            className={`relative ${p.destaque ? "border-primary shadow-lg scale-[1.02]" : ""}`}
-          >
-            {p.destaque && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-heading font-semibold px-4 py-1 rounded-full">
-                Mais popular
-              </span>
-            )}
-            <CardHeader className="text-center pb-2">
-              <CardTitle className="text-xl font-heading">{p.nome}</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">{p.desc}</p>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <ul className="space-y-3 mb-6">
-                {p.itens.map((item, j) => (
-                  <li key={j} className="flex items-start gap-2 text-sm">
-                    <Check size={16} className="text-primary flex-shrink-0 mt-0.5" />
-                    <span>{item}</span>
-                  </li>
+      {/* Comparison table */}
+      <div className="max-w-4xl mx-auto overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border/40">
+              <th className="text-left py-4 pr-4 font-body font-normal text-muted-foreground text-[13px]" />
+              {planos.map((p) => (
+                <th key={p.nome} className="text-center py-4 px-4 min-w-[140px]">
+                  <div className="font-heading font-light text-xl mb-1">{p.nome}</div>
+                  <div className="text-[11px] text-muted-foreground font-body font-normal">{p.frequencia}</div>
+                  {p.destaque && (
+                    <span className="inline-block mt-2 text-[10px] font-body font-medium tracking-label uppercase text-primary">
+                      Recomendado
+                    </span>
+                  )}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {features.map((f, i) => (
+              <tr key={i} className="border-b border-border/20">
+                <td className="py-3.5 pr-4 text-[13px] text-muted-foreground">{f}</td>
+                {planos.map((p) => (
+                  <td key={p.nome} className="text-center py-3.5 px-4">
+                    {planFeatures[p.nome][i] ? (
+                      <span className="text-primary text-sm">✓</span>
+                    ) : (
+                      <span className="text-border">—</span>
+                    )}
+                  </td>
                 ))}
-              </ul>
-              <p className="text-xs text-muted-foreground mb-6">
-                Frequência sugerida: {p.frequencia}
-              </p>
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                <Button
-                  className="w-full rounded-full font-heading font-semibold"
-                  variant={p.destaque ? "default" : "outline"}
-                >
-                  Agendar
-                </Button>
-              </a>
-            </CardContent>
-          </Card>
-        ))}
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td className="pt-8" />
+              {planos.map((p) => (
+                <td key={p.nome} className="text-center pt-8 px-4">
+                  <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      className={cn(
+                        "rounded-none font-body font-medium tracking-wide text-xs h-10 px-6 w-full",
+                        !p.destaque && "bg-transparent border border-border text-foreground hover:bg-muted"
+                      )}
+                    >
+                      Agendar
+                    </Button>
+                  </a>
+                </td>
+              ))}
+            </tr>
+          </tfoot>
+        </table>
       </div>
 
-      <p className="text-center text-xs text-muted-foreground mt-8 max-w-md mx-auto">
+      <p className="text-center text-[12px] text-muted-foreground mt-10 max-w-md mx-auto">
         Planos podem variar conforme objetivo e disponibilidade. Entre em contato para uma proposta personalizada.
       </p>
     </Section>

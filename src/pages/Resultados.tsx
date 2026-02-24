@@ -1,6 +1,6 @@
-import { Section, SectionTitle, SectionSubtitle } from "@/components/Section";
-import { Card, CardContent } from "@/components/ui/card";
-import { User, Users, Clock } from "lucide-react";
+import { Section, SectionLabel, SectionTitle, SectionSubtitle } from "@/components/Section";
+import { motion } from "framer-motion";
+import { User } from "lucide-react";
 
 const depoimentos = [
   { nome: "Ana S.", texto: "Em 6 meses, transformei meu corpo e minha relação com o exercício. O Kléby é excepcional.", objetivo: "Emagrecimento" },
@@ -12,60 +12,77 @@ const depoimentos = [
 ];
 
 const metricas = [
-  { icon: Users, label: "Alunos acompanhados", valor: "+100" },
-  { icon: Clock, label: "Meses de experiência", valor: "+60" },
+  { label: "Alunos acompanhados", valor: "+100" },
+  { label: "Meses de experiência", valor: "+60" },
 ];
 
 const Resultados = () => {
   return (
     <>
-      {/* Métricas */}
       <Section>
-        <SectionTitle>Resultados</SectionTitle>
-        <SectionSubtitle className="mb-12">
-          Provas sociais de quem já treina com método e constância.
+        <SectionLabel>Resultados</SectionLabel>
+        <SectionTitle>Provas de quem treina com método</SectionTitle>
+        <SectionSubtitle className="mb-16">
+          Resultados reais de alunos que decidiram evoluir com constância.
         </SectionSubtitle>
-        <div className="flex flex-wrap gap-6 mb-16">
+
+        {/* Métricas */}
+        <div className="flex gap-12 mb-20">
           {metricas.map((m, i) => (
-            <div key={i} className="flex items-center gap-4 px-6 py-4 rounded-xl bg-muted/50 border border-border">
-              <m.icon size={24} className="text-primary" />
-              <div>
-                <p className="font-heading font-bold text-2xl">{m.valor}</p>
-                <p className="text-sm text-muted-foreground">{m.label}</p>
-              </div>
+            <div key={i}>
+              <p className="text-3xl md:text-4xl font-heading font-light text-foreground">{m.valor}</p>
+              <p className="text-[13px] text-muted-foreground mt-1">{m.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Antes/Depois placeholder */}
-        <h3 className="font-heading font-semibold text-xl mb-6">Transformações</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-16">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="aspect-[3/4] rounded-xl bg-muted border border-border flex items-center justify-center">
-              <div className="text-center">
-                <User size={32} className="text-muted-foreground mx-auto mb-2" />
-                <p className="text-xs text-muted-foreground">Antes / Depois {i}</p>
+        {/* Transformações */}
+        <div className="mb-20">
+          <span className="text-[11px] font-body font-medium tracking-label uppercase text-primary/60 block mb-8">
+            Transformações
+          </span>
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="aspect-[3/4] bg-muted border border-border/40 flex items-center justify-center">
+                <div className="text-center">
+                  <User size={24} className="text-muted-foreground/40 mx-auto mb-2" />
+                  <p className="text-[11px] text-muted-foreground">Antes / Depois {i}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </Section>
 
       {/* Depoimentos */}
-      <Section className="bg-muted/50">
-        <h3 className="font-heading font-semibold text-xl mb-8">Depoimentos</h3>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {depoimentos.map((d, i) => (
-            <Card key={i} className="border-0 shadow-none bg-background">
-              <CardContent className="p-6">
-                <p className="text-sm leading-relaxed mb-4 italic">"{d.texto}"</p>
-                <div className="flex items-center justify-between">
-                  <p className="font-heading font-semibold text-sm text-primary">{d.nome}</p>
-                  <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">{d.objetivo}</span>
+      <Section className="border-t border-border/40">
+        <div className="grid lg:grid-cols-2 gap-16">
+          <div>
+            <SectionLabel>Depoimentos</SectionLabel>
+            <SectionTitle>O que dizem meus alunos</SectionTitle>
+          </div>
+          <div className="space-y-8">
+            {depoimentos.map((d, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                className="border-l-[1.5px] border-primary/30 pl-6 py-1"
+              >
+                <p className="text-base leading-relaxed mb-3 font-heading font-light italic text-foreground/90">
+                  {d.texto}
+                </p>
+                <div className="flex items-center gap-3">
+                  <span className="text-[12px] font-body font-medium tracking-wide text-muted-foreground uppercase">
+                    {d.nome}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground/60">— {d.objetivo}</span>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </Section>
     </>
