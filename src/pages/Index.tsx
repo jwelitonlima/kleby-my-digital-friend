@@ -101,7 +101,7 @@ const Home = () => {
               className="max-w-lg"
             >
               <span className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground mb-5 block">
-                Personal Trainer · Picos, PI
+                Personal Trainer · CREF 000849-G/PI · Picos, PI
               </span>
               <h1 className="text-hero mb-5">
                 Performance{" "}

@@ -39,8 +39,9 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-10 pt-4 border-t border-border/30 text-[11px] text-muted-foreground/40">
-          © {new Date().getFullYear()} Kléby Almeida Personal Trainer
+        <div className="mt-10 pt-4 border-t border-border/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-[11px] text-muted-foreground/40">
+          <span>© {new Date().getFullYear()} Kléby Almeida Personal Trainer</span>
+          <span>CREF 000849-G/PI</span>
         </div>
       </div>
     </footer>

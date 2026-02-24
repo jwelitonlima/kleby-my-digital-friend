@@ -9,7 +9,7 @@ import { ArrowRight } from "lucide-react";
 
 const contatos = [
   { label: "WhatsApp", sub: "Principal", href: WHATSAPP_LINK },
-  { label: "Instagram", sub: "@klebyalmeida", href: INSTAGRAM_LINK },
+  { label: "Instagram", sub: "@kleby.almeida_personal", href: INSTAGRAM_LINK },
   { label: "E-mail", sub: EMAIL, href: `mailto:${EMAIL}` },
   { label: "Local", sub: "Picos, PI", href: "#" },
 ];
