@@ -80,7 +80,7 @@ const Servicos = () => {
               </div>
               <div className="mt-6 ml-14">
                 <a
-                  href={`https://wa.me/5500000000000?text=${encodeURIComponent(s.msg)}`}
+                  href={`https://wa.me/5589988038518?text=${encodeURIComponent(s.msg)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
