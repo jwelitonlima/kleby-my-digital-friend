@@ -11,10 +11,7 @@ import logoLight from "@/assets/logo-light.png";
 const navItems = [
   { label: "Início", path: "/" },
   { label: "Método", path: "/sobre" },
-  { label: "Serviços", path: "/servicos" },
   { label: "Resultados", path: "/resultados" },
-  { label: "Planos", path: "/planos" },
-  { label: "Conteúdos", path: "/conteudos" },
   { label: "Contato", path: "/contato" },
 ];
 
@@ -41,7 +38,7 @@ export function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="container flex items-center justify-between h-14 md:h-16">
+      <div className="container flex items-center justify-between h-12 md:h-14">
         <Link to="/" className="flex items-center relative z-50">
           <img
             src={theme === "dark" ? logoDark : logoLight}
@@ -50,16 +47,16 @@ export function Header() {
           />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
+        <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
               className={cn(
-                "text-[13px] font-medium transition-colors",
+                "text-[12px] tracking-wide transition-colors",
                 location.pathname === item.path
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "text-foreground font-semibold"
+                  : "text-muted-foreground font-normal hover:text-foreground"
               )}
             >
               {item.label}
