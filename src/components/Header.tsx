@@ -56,7 +56,7 @@ export function Header() {
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Kléby Almeida"
-                className="h-8 w-auto"
+                className="h-[50px] w-auto"
               />
             </Link>
             <div className="flex items-center gap-2">
@@ -120,7 +120,7 @@ export function Header() {
             <img
               src={theme === "dark" ? logoDark : logoLight}
               alt="Kléby Almeida"
-              className="h-7 w-auto"
+              className="h-[50px] w-auto"
             />
           </Link>
 
