@@ -51,12 +51,12 @@ export function Header() {
           }}
         >
           {/* Top bar */}
-          <div className="flex items-center justify-between h-12 px-6">
+          <div className="flex items-center justify-between h-16 px-6">
             <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Kléby Almeida"
-                className="h-20 w-auto"
+                className="h-8 w-auto"
               />
             </Link>
             <div className="flex items-center gap-2">
