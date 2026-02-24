@@ -42,19 +42,19 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-200",
+        "fixed top-0 left-0 right-0 z-[100] transition-all duration-200",
         scrolled
           ? "bg-background/90 backdrop-blur-xl border-b border-border/40"
           : "bg-transparent"
       )}
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      <div className="container flex items-center justify-between h-11 md:h-14">
-        <Link to="/" className="flex items-center relative z-50">
+      <div className="container flex items-center justify-between h-12 md:h-14">
+        <Link to="/" className="flex items-center relative z-[101]">
           <img
             src={theme === "dark" ? logoDark : logoLight}
             alt="Kléby Almeida"
-            className="h-5 md:h-7 w-auto"
+            className="h-8 md:h-7 w-auto"
           />
         </Link>
 
@@ -75,7 +75,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 relative z-50">
+        <div className="flex items-center gap-2 relative z-[101]">
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
@@ -106,15 +106,24 @@ export function Header() {
       {open && (
         <div
           className="lg:hidden fixed inset-0 z-[9999] bg-background flex flex-col"
-          style={{ paddingTop: "env(safe-area-inset-top)" }}
+          style={{ 
+            paddingTop: "env(safe-area-inset-top)",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            position: "fixed",
+            width: "100vw",
+            height: "100dvh",
+          }}
         >
           {/* Close bar */}
-          <div className="flex items-center justify-between h-11 px-6">
+          <div className="flex items-center justify-between h-12 px-6">
             <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
               <img
                 src={theme === "dark" ? logoDark : logoLight}
                 alt="Kléby Almeida"
-                className="h-5 w-auto"
+                className="h-8 w-auto"
               />
             </Link>
             <div className="flex items-center gap-2">
