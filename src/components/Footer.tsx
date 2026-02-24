@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
-import logoDark from "@/assets/logo-dark.png";
-import logoLight from "@/assets/logo-light.png";
+import logoDark from "@/assets/logo-dark.svg";
+import logoLight from "@/assets/logo-light.svg";
 
 export function Footer() {
   const { theme } = useTheme();

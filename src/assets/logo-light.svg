@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" fill="none">
+  <!-- K Icon Circle -->
+  <g transform="translate(145, 10)">
+    <!-- Left green arc -->
+    <path d="M45 5 C20 10, 5 35, 5 60 C5 85, 15 105, 35 115" stroke="#1BA454" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <!-- Green triangle top-right -->
+    <path d="M55 0 L95 0 L55 40 Z" fill="#1BA454"/>
+    <!-- Dark K shape -->
+    <path d="M50 25 L50 95 M50 60 L85 25 M50 60 L85 95" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Circle outline right side -->
+    <path d="M75 115 C100 105, 110 80, 110 60 C110 35, 95 15, 75 5" stroke="#cccccc" stroke-width="5" fill="none" opacity="0.3"/>
+  </g>
+  
+  <!-- Text: Kléby Almeida -->
+  <text x="200" y="175" text-anchor="middle" font-family="'Trebuchet MS', 'Arial', sans-serif" font-size="48" font-weight="700" fill="#1BA454" letter-spacing="1">
+    Kléby Almeida
+  </text>
+  
+  <!-- Text: PERSONAL TRAINER -->
+  <text x="200" y="210" text-anchor="middle" font-family="'Trebuchet MS', 'Arial', sans-serif" font-size="22" font-weight="400" fill="#888888" letter-spacing="6">
+    PERSONAL TRAINER
+  </text>
+</svg>
