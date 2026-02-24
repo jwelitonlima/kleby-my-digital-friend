@@ -103,36 +103,63 @@ export function Header() {
       </div>
 
       {/* Mobile fullscreen overlay */}
-      <div
-        className={cn(
-          "lg:hidden fixed inset-0 bg-background z-40 flex flex-col justify-center transition-all duration-300",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-        style={{ paddingTop: "env(safe-area-inset-top)" }}
-      >
-        <nav className="px-6 flex flex-col gap-0">
-          {navItems.map((item, i) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setOpen(false)}
-              className={cn(
-                "text-2xl font-semibold py-5 border-b border-border/30 transition-all duration-200",
-                open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-                location.pathname === item.path ? "text-primary" : "text-foreground"
-              )}
-              style={{ transitionDelay: open ? `${i * 50}ms` : "0ms" }}
-            >
-              {item.label}
+      {open && (
+        <div
+          className="lg:hidden fixed inset-0 z-[9999] bg-background flex flex-col"
+          style={{ paddingTop: "env(safe-area-inset-top)" }}
+        >
+          {/* Close bar */}
+          <div className="flex items-center justify-between h-11 px-6">
+            <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
+              <img
+                src={theme === "dark" ? logoDark : logoLight}
+                alt="Kléby Almeida"
+                className="h-5 w-auto"
+              />
             </Link>
-          ))}
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-10">
-            <Button className="w-full font-semibold h-14 rounded-2xl text-[15px] active:scale-[0.98] transition-transform">
-              Iniciar Avaliação
-            </Button>
-          </a>
-        </nav>
-      </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Alternar tema"
+              >
+                {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+              </button>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 text-foreground"
+                aria-label="Fechar menu"
+              >
+                <span className="block w-4 h-[1.5px] bg-current rotate-45 absolute" />
+                <span className="block w-4 h-[1.5px] bg-current -rotate-45" />
+              </button>
+            </div>
+          </div>
+
+          <nav className="flex-1 flex flex-col justify-center px-6">
+            {navItems.map((item, i) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setOpen(false)}
+                className={cn(
+                  "text-2xl font-semibold py-5 border-b border-border/30",
+                  "animate-in fade-in slide-in-from-bottom-2",
+                  location.pathname === item.path ? "text-primary" : "text-foreground"
+                )}
+                style={{ animationDelay: `${i * 50}ms`, animationFillMode: "both" }}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-10">
+              <Button className="w-full font-semibold h-14 rounded-2xl text-[15px] active:scale-[0.98] transition-transform">
+                Iniciar Avaliação
+              </Button>
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
