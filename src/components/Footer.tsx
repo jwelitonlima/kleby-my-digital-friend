@@ -57,11 +57,11 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-10 md:mt-10 pt-4 border-t border-border/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-[11px] text-muted-foreground/40">
+        <div className="mt-10 md:mt-10 pt-4 border-t border-border/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-[11px] text-muted-foreground/40 pb-16 md:pb-0">
           <span>© {new Date().getFullYear()} Kléby Almeida Personal Trainer</span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 pr-16 md:pr-0">
             <span>CREF {cref}</span>
-            <Link to="/admin/login" className="hover:text-muted-foreground transition-colors p-1">·</Link>
+            <Link to="/admin/login" className="hover:text-muted-foreground transition-colors p-2">·</Link>
           </div>
         </div>
       </div>
