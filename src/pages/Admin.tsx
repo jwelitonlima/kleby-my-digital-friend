@@ -5,9 +5,26 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/use-auth";
 import { useSiteContent, useUpdateSiteContent, useUploadSiteImage, useSiteImages } from "@/hooks/use-site-content";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, LogOut, Upload, Plus, Trash2 } from "lucide-react";
+import { Save, LogOut, Upload, Plus, Trash2, KeyRound, Eye, EyeOff, ChevronDown, ChevronUp } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+/* ── Password validation ── */
+const PASSWORD_RULES = {
+  minLength: 8,
+  hasNumber: /\d/,
+  hasSpecial: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+};
+
+function validatePassword(pw: string) {
+  return {
+    minLength: pw.length >= PASSWORD_RULES.minLength,
+    hasNumber: PASSWORD_RULES.hasNumber.test(pw),
+    hasSpecial: PASSWORD_RULES.hasSpecial.test(pw),
+    isValid: pw.length >= PASSWORD_RULES.minLength && PASSWORD_RULES.hasNumber.test(pw) && PASSWORD_RULES.hasSpecial.test(pw),
+  };
+}
 
 /* ── Types ── */
 type FieldDef = { key: string; label: string; type: "text" | "textarea" };
@@ -136,6 +153,158 @@ const imageSlots = [
   { key: "resultado_3", label: "Antes/Depois 3" },
 ];
 
+/* ── Collapsible Section ── */
+function CollapsibleSection({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="border border-border/40 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-4 py-3 bg-muted/30 active:bg-muted/50 transition-colors"
+      >
+        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</span>
+        {open ? <ChevronUp size={16} className="text-muted-foreground" /> : <ChevronDown size={16} className="text-muted-foreground" />}
+      </button>
+      {open && <div className="p-4 space-y-3">{children}</div>}
+    </div>
+  );
+}
+
+/* ── Password Change Component ── */
+function PasswordChange() {
+  const [currentPw, setCurrentPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [confirmPw, setConfirmPw] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const validation = validatePassword(newPw);
+  const passwordsMatch = newPw === confirmPw && confirmPw.length > 0;
+
+  const handleChange = async () => {
+    if (!validation.isValid) {
+      toast.error("A nova senha não atende aos requisitos");
+      return;
+    }
+    if (!passwordsMatch) {
+      toast.error("As senhas não coincidem");
+      return;
+    }
+    setSaving(true);
+    try {
+      // Re-authenticate with current password first
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) throw new Error("Usuário não encontrado");
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPw,
+      });
+      if (signInError) {
+        toast.error("Senha atual incorreta");
+        setSaving(false);
+        return;
+      }
+
+      const { error } = await supabase.auth.updateUser({ password: newPw });
+      if (error) throw error;
+      toast.success("Senha alterada com sucesso!");
+      setCurrentPw("");
+      setNewPw("");
+      setConfirmPw("");
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao alterar senha");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const ruleClass = (ok: boolean) =>
+    cn("text-xs transition-colors", ok ? "text-primary" : "text-muted-foreground");
+
+  return (
+    <div className="space-y-4">
+      {/* Current password */}
+      <div className="space-y-1.5">
+        <label className="text-xs text-muted-foreground">Senha atual</label>
+        <div className="relative">
+          <Input
+            type={showCurrent ? "text" : "password"}
+            value={currentPw}
+            onChange={(e) => setCurrentPw(e.target.value)}
+            placeholder="Digite sua senha atual"
+            className="pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowCurrent(!showCurrent)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          >
+            {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+      </div>
+
+      {/* New password */}
+      <div className="space-y-1.5">
+        <label className="text-xs text-muted-foreground">Nova senha</label>
+        <div className="relative">
+          <Input
+            type={showNew ? "text" : "password"}
+            value={newPw}
+            onChange={(e) => setNewPw(e.target.value)}
+            placeholder="Digite a nova senha"
+            className="pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowNew(!showNew)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          >
+            {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+        {newPw.length > 0 && (
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5">
+            <span className={ruleClass(validation.minLength)}>
+              {validation.minLength ? "✓" : "○"} 8+ caracteres
+            </span>
+            <span className={ruleClass(validation.hasNumber)}>
+              {validation.hasNumber ? "✓" : "○"} Número
+            </span>
+            <span className={ruleClass(validation.hasSpecial)}>
+              {validation.hasSpecial ? "✓" : "○"} Caractere especial
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Confirm password */}
+      <div className="space-y-1.5">
+        <label className="text-xs text-muted-foreground">Confirmar nova senha</label>
+        <Input
+          type="password"
+          value={confirmPw}
+          onChange={(e) => setConfirmPw(e.target.value)}
+          placeholder="Repita a nova senha"
+        />
+        {confirmPw.length > 0 && !passwordsMatch && (
+          <span className="text-xs text-destructive">As senhas não coincidem</span>
+        )}
+      </div>
+
+      <Button
+        onClick={handleChange}
+        disabled={saving || !validation.isValid || !passwordsMatch || !currentPw}
+        className="w-full h-12 font-semibold rounded-xl"
+      >
+        {saving ? "Alterando..." : "Alterar senha"}
+      </Button>
+    </div>
+  );
+}
+
 /* ── JSON Array Editor Component ── */
 function JsonArrayEditor({ 
   group, value, onChange 
@@ -147,7 +316,6 @@ function JsonArrayEditor({
   let items: any[] = [];
   try { items = JSON.parse(value || "[]"); } catch { items = []; }
   
-  // Handle simple string arrays (like formações, features)
   const isSimpleArray = group.fields.length === 1 && group.fields[0].name === "value";
 
   const updateItem = (index: number, field: string, val: string) => {
@@ -177,11 +345,11 @@ function JsonArrayEditor({
   return (
     <div className="space-y-3">
       {items.map((item, i) => (
-        <div key={i} className="border border-border/50 rounded-lg p-3 space-y-2 relative">
+        <div key={i} className="border border-border/50 rounded-xl p-3 space-y-2 relative">
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-semibold text-muted-foreground">#{i + 1}</span>
-            <button onClick={() => removeItem(i)} className="text-destructive/60 hover:text-destructive">
-              <Trash2 size={12} />
+            <button onClick={() => removeItem(i)} className="p-2 -m-2 text-destructive/60 hover:text-destructive active:scale-95 transition-transform">
+              <Trash2 size={14} />
             </button>
           </div>
           {isSimpleArray ? (
@@ -203,10 +371,27 @@ function JsonArrayEditor({
           )}
         </div>
       ))}
-      <Button variant="outline" size="sm" onClick={addItem} className="gap-1.5 w-full">
-        <Plus size={12} /> Adicionar item
+      <Button variant="outline" size="sm" onClick={addItem} className="gap-1.5 w-full h-11 rounded-xl active:scale-[0.98] transition-transform">
+        <Plus size={14} /> Adicionar item
       </Button>
     </div>
+  );
+}
+
+/* ── Tab Button (mobile-optimized) ── */
+function TabButton({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "px-4 py-2.5 text-sm font-medium rounded-xl whitespace-nowrap transition-all active:scale-[0.97]",
+        active
+          ? "bg-primary text-primary-foreground shadow-sm"
+          : "bg-muted/50 text-muted-foreground hover:bg-muted"
+      )}
+    >
+      {label}
+    </button>
   );
 }
 
@@ -219,6 +404,7 @@ export default function Admin() {
   const updateContent = useUpdateSiteContent();
   const uploadImage = useUploadSiteImage();
   const [edits, setEdits] = useState<Record<string, string>>({});
+  const [activeTab, setActiveTab] = useState("textos");
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -277,134 +463,166 @@ export default function Admin() {
     }
   };
 
+  const tabs = [
+    { id: "textos", label: "Textos" },
+    { id: "listas", label: "Listas" },
+    { id: "blog", label: "Blog" },
+    { id: "imagens", label: "Imagens" },
+    { id: "senha", label: "Senha" },
+  ];
+
   return (
-    <div className="container max-w-2xl py-8 md:py-12">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-xl font-bold">Painel Admin</h1>
-        <div className="flex gap-2">
-          <Button onClick={handleSaveAll} size="sm" className="gap-1.5">
-            <Save size={14} /> Salvar tudo
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => signOut()} className="gap-1.5">
-            <LogOut size={14} /> Sair
-          </Button>
+    <div className="min-h-screen pb-safe">
+      {/* Sticky header */}
+      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-lg border-b border-border/40">
+        <div className="container max-w-2xl">
+          <div className="flex items-center justify-between py-3">
+            <h1 className="text-lg font-bold">Painel</h1>
+            <div className="flex gap-2">
+              <Button onClick={handleSaveAll} size="sm" className="gap-1.5 h-9 rounded-xl text-xs active:scale-[0.97] transition-transform">
+                <Save size={13} /> Salvar
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => signOut()} className="gap-1.5 h-9 rounded-xl text-xs active:scale-[0.97] transition-transform">
+                <LogOut size={13} />
+              </Button>
+            </div>
+          </div>
+
+          {/* Scrollable tab bar */}
+          <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-hide">
+            {tabs.map((tab) => (
+              <TabButton
+                key={tab.id}
+                active={activeTab === tab.id}
+                label={tab.label}
+                onClick={() => setActiveTab(tab.id)}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      <Tabs defaultValue="textos">
-        <TabsList className="mb-6 flex-wrap h-auto gap-1">
-          <TabsTrigger value="textos">Textos</TabsTrigger>
-          <TabsTrigger value="listas">Listas</TabsTrigger>
-          <TabsTrigger value="blog">Blog</TabsTrigger>
-          <TabsTrigger value="imagens">Imagens</TabsTrigger>
-        </TabsList>
-
+      <div className="container max-w-2xl py-6 space-y-4">
         {/* TEXTOS */}
-        <TabsContent value="textos" className="space-y-8">
-          {contentGroups.map((group) => (
-            <div key={group.label} className="space-y-4">
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                {group.label}
-              </h2>
-              {group.keys.map((field) => (
-                <div key={field.key} className="space-y-1.5">
-                  <label className="text-xs text-muted-foreground">{field.label}</label>
-                  {field.type === "textarea" ? (
-                    <Textarea
-                      value={edits[field.key] ?? ""}
-                      onChange={(e) =>
-                        setEdits((prev) => ({ ...prev, [field.key]: e.target.value }))
-                      }
-                      onBlur={() => handleSave(field.key)}
-                      rows={3}
-                    />
-                  ) : (
-                    <Input
-                      value={edits[field.key] ?? ""}
-                      onChange={(e) =>
-                        setEdits((prev) => ({ ...prev, [field.key]: e.target.value }))
-                      }
-                      onBlur={() => handleSave(field.key)}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </TabsContent>
+        {activeTab === "textos" && (
+          <div className="space-y-4">
+            {contentGroups.map((group) => (
+              <CollapsibleSection key={group.label} title={group.label}>
+                {group.keys.map((field) => (
+                  <div key={field.key} className="space-y-1.5">
+                    <label className="text-xs text-muted-foreground">{field.label}</label>
+                    {field.type === "textarea" ? (
+                      <Textarea
+                        value={edits[field.key] ?? ""}
+                        onChange={(e) =>
+                          setEdits((prev) => ({ ...prev, [field.key]: e.target.value }))
+                        }
+                        onBlur={() => handleSave(field.key)}
+                        rows={3}
+                      />
+                    ) : (
+                      <Input
+                        value={edits[field.key] ?? ""}
+                        onChange={(e) =>
+                          setEdits((prev) => ({ ...prev, [field.key]: e.target.value }))
+                        }
+                        onBlur={() => handleSave(field.key)}
+                      />
+                    )}
+                  </div>
+                ))}
+              </CollapsibleSection>
+            ))}
+          </div>
+        )}
 
-        {/* LISTAS (JSON arrays) */}
-        <TabsContent value="listas" className="space-y-8">
-          {jsonArrayGroups.map((group) => (
-            <div key={group.key} className="space-y-3">
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                {group.label}
-              </h2>
-              <JsonArrayEditor
-                group={group}
-                value={edits[group.key] ?? "[]"}
-                onChange={(val) => setEdits((prev) => ({ ...prev, [group.key]: val }))}
+        {/* LISTAS */}
+        {activeTab === "listas" && (
+          <div className="space-y-4">
+            {jsonArrayGroups.map((group) => (
+              <CollapsibleSection key={group.key} title={group.label}>
+                <JsonArrayEditor
+                  group={group}
+                  value={edits[group.key] ?? "[]"}
+                  onChange={(val) => setEdits((prev) => ({ ...prev, [group.key]: val }))}
+                />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleSave(group.key)}
+                  className="gap-1.5 w-full h-11 rounded-xl active:scale-[0.98] transition-transform"
+                >
+                  <Save size={13} /> Salvar {group.label}
+                </Button>
+              </CollapsibleSection>
+            ))}
+          </div>
+        )}
+
+        {/* BLOG */}
+        {activeTab === "blog" && (
+          <div className="space-y-4">
+            <CollapsibleSection title="Artigos do Blog" defaultOpen>
+              <BlogEditor
+                value={edits["blog_posts"] ?? "[]"}
+                onChange={(val) => setEdits((prev) => ({ ...prev, blog_posts: val }))}
               />
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => handleSave(group.key)}
-                className="gap-1.5"
+                onClick={() => handleSave("blog_posts")}
+                className="gap-1.5 w-full h-11 rounded-xl active:scale-[0.98] transition-transform"
               >
-                <Save size={12} /> Salvar {group.label}
+                <Save size={13} /> Salvar artigos
               </Button>
-            </div>
-          ))}
-        </TabsContent>
-
-        {/* BLOG */}
-        <TabsContent value="blog" className="space-y-6">
-          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-            Artigos do Blog
-          </h2>
-          <BlogEditor
-            value={edits["blog_posts"] ?? "[]"}
-            onChange={(val) => setEdits((prev) => ({ ...prev, blog_posts: val }))}
-          />
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => handleSave("blog_posts")}
-            className="gap-1.5"
-          >
-            <Save size={12} /> Salvar artigos
-          </Button>
-        </TabsContent>
+            </CollapsibleSection>
+          </div>
+        )}
 
         {/* IMAGENS */}
-        <TabsContent value="imagens" className="space-y-6">
-          {imageSlots.map((slot) => (
-            <div key={slot.key} className="space-y-2">
-              <label className="text-xs text-muted-foreground">{slot.label}</label>
-              {images?.[slot.key] && (
-                <img
-                  src={images[slot.key]}
-                  alt={slot.label}
-                  className="h-20 object-contain rounded bg-muted p-2"
-                />
-              )}
-              <label className="flex items-center gap-2 cursor-pointer text-sm text-primary hover:underline">
-                <Upload size={14} />
-                Trocar imagem
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleImageUpload(slot.key, file);
-                  }}
-                />
-              </label>
-            </div>
-          ))}
-        </TabsContent>
-      </Tabs>
+        {activeTab === "imagens" && (
+          <div className="space-y-4">
+            {imageSlots.map((slot) => (
+              <div key={slot.key} className="border border-border/40 rounded-xl p-4 space-y-3">
+                <label className="text-xs text-muted-foreground font-medium">{slot.label}</label>
+                {images?.[slot.key] && (
+                  <img
+                    src={images[slot.key]}
+                    alt={slot.label}
+                    className="h-20 object-contain rounded-lg bg-muted p-2"
+                  />
+                )}
+                <label className="flex items-center justify-center gap-2 cursor-pointer text-sm text-primary font-medium h-11 rounded-xl border border-primary/20 bg-primary/5 active:bg-primary/10 transition-colors">
+                  <Upload size={14} />
+                  Trocar imagem
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(slot.key, file);
+                    }}
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* SENHA */}
+        {activeTab === "senha" && (
+          <div className="space-y-4">
+            <CollapsibleSection title="Alterar Senha" defaultOpen>
+              <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+                <KeyRound size={16} />
+                <span className="text-xs">Mínimo 8 caracteres, com número e caractere especial</span>
+              </div>
+              <PasswordChange />
+            </CollapsibleSection>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -417,7 +635,6 @@ function BlogEditor({ value, onChange }: { value: string; onChange: (val: string
   const updatePost = (index: number, field: string, val: string) => {
     const updated = [...posts];
     updated[index] = { ...updated[index], [field]: val };
-    // Auto-generate slug from title
     if (field === "title") {
       updated[index].slug = val
         .toLowerCase()
@@ -439,11 +656,11 @@ function BlogEditor({ value, onChange }: { value: string; onChange: (val: string
   return (
     <div className="space-y-4">
       {posts.map((post, i) => (
-        <div key={i} className="border border-border/50 rounded-lg p-4 space-y-2">
+        <div key={i} className="border border-border/50 rounded-xl p-4 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Artigo #{i + 1}</span>
-            <button onClick={() => removePost(i)} className="text-destructive/60 hover:text-destructive">
-              <Trash2 size={12} />
+            <button onClick={() => removePost(i)} className="p-2 -m-2 text-destructive/60 hover:text-destructive active:scale-95 transition-transform">
+              <Trash2 size={14} />
             </button>
           </div>
           <div>
@@ -470,8 +687,8 @@ function BlogEditor({ value, onChange }: { value: string; onChange: (val: string
           </div>
         </div>
       ))}
-      <Button variant="outline" size="sm" onClick={addPost} className="gap-1.5 w-full">
-        <Plus size={12} /> Novo artigo
+      <Button variant="outline" size="sm" onClick={addPost} className="gap-1.5 w-full h-11 rounded-xl active:scale-[0.98] transition-transform">
+        <Plus size={14} /> Novo artigo
       </Button>
     </div>
   );
