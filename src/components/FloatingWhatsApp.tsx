@@ -1,16 +1,38 @@
+import { useEffect, useState } from "react";
 import { WHATSAPP_LINK } from "@/lib/constants";
 
 export function FloatingWhatsApp() {
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      const footer = document.querySelector("footer");
+      if (!footer) return;
+      const footerTop = footer.getBoundingClientRect().top;
+      const threshold = window.innerHeight - 100;
+      setHidden(footerTop <= threshold);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, []);
+
   return (
     <a
       href={WHATSAPP_LINK}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed z-50 flex items-center justify-center w-14 h-14 md:w-14 md:h-14 rounded-full shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-105 active:scale-95 transition-all duration-200"
+      className="fixed z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-105 active:scale-95 transition-all duration-300"
       style={{
         bottom: "calc(24px + env(safe-area-inset-bottom))",
         right: "calc(24px + env(safe-area-inset-right))",
         background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+        opacity: hidden ? 0 : 1,
+        pointerEvents: hidden ? "none" : "auto",
       }}
       aria-label="Falar no WhatsApp"
     >
