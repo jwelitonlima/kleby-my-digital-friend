@@ -98,6 +98,16 @@
   .text-balance {
     text-wrap: balance;
   }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 1.5rem);
+  }
 }
 
 /* Mobile-first container override */
