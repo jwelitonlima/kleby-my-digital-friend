@@ -34,7 +34,7 @@ const Planos = () => {
 
   return (
     <Section>
-      <div className="text-center mb-12">
+      <div className="text-center mb-10 md:mb-12">
         <SectionLabel className="text-center">{c?.planos_label ?? 'Planos'}</SectionLabel>
         <SectionTitle className="text-center">{c?.planos_title ?? 'Escolha seu plano'}</SectionTitle>
         <SectionSubtitle className="mx-auto text-center">
@@ -43,24 +43,24 @@ const Planos = () => {
       </div>
 
       {/* Mobile: cards */}
-      <div className="flex flex-col gap-6 md:hidden">
+      <div className="flex flex-col gap-4 md:hidden">
         {planos.map((p: any) => (
-          <div key={p.nome} className={cn("rounded-xl border p-6", p.destaque ? "border-primary bg-primary/5 shadow-md" : "border-border bg-card")}>
+          <div key={p.nome} className={cn("rounded-2xl border p-5", p.destaque ? "border-primary bg-primary/5 shadow-md" : "border-border bg-card")}>
             <div className="text-center mb-5">
               <div className="font-bold text-xl">{p.nome}</div>
-              <div className="text-[12px] text-muted-foreground mt-0.5">{p.freq}</div>
+              <div className="text-[13px] text-muted-foreground mt-0.5">{p.freq}</div>
               {p.destaque && <span className="inline-block mt-2 text-[10px] font-semibold tracking-label uppercase text-primary">Recomendado</span>}
             </div>
-            <ul className="space-y-2.5 mb-6">
+            <ul className="space-y-3 mb-6">
               {features.map((f: string, i: number) => (
-                <li key={i} className="flex items-center gap-2.5 text-[13px]">
+                <li key={i} className="flex items-center gap-3 text-[14px]">
                   {planFeatures[p.nome]?.[i] ? <span className="text-primary font-bold text-sm">✓</span> : <span className="text-border text-sm">—</span>}
                   <span className={cn(!planFeatures[p.nome]?.[i] && "text-muted-foreground/50")}>{f}</span>
                 </li>
               ))}
             </ul>
             <a href={getWhatsAppLink(p.msg)} target="_blank" rel="noopener noreferrer">
-              <Button className={cn("w-full h-12 font-semibold text-[13px] rounded-lg", !p.destaque && "bg-transparent border border-border text-foreground hover:bg-accent")}>
+              <Button className={cn("w-full h-[52px] font-semibold text-[15px] rounded-2xl active:scale-[0.98] transition-transform", !p.destaque && "bg-transparent border border-border text-foreground hover:bg-accent")}>
                 Começar
               </Button>
             </a>
@@ -111,7 +111,7 @@ const Planos = () => {
           </tfoot>
         </table>
       </div>
-      <p className="text-center text-[11px] text-muted-foreground mt-8 max-w-sm mx-auto">
+      <p className="text-center text-[12px] md:text-[11px] text-muted-foreground mt-8 max-w-sm mx-auto">
         {c?.planos_note ?? 'Planos variam conforme objetivo e disponibilidade.'}
       </p>
     </Section>
