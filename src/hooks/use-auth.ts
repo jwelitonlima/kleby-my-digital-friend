@@ -22,18 +22,7 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) {
-        checkAdmin(u.id).then(() => setLoading(false));
-      } else {
-        setLoading(false);
-      }
-    });
-
-    // Listen for auth changes
+    // Set up listener FIRST (recommended by Supabase)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         const u = session?.user ?? null;
@@ -46,6 +35,17 @@ export function useAuth() {
         }
       }
     );
+
+    // Then get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        checkAdmin(u.id).then(() => setLoading(false));
+      } else {
+        setLoading(false);
+      }
+    });
 
     return () => subscription.unsubscribe();
   }, [checkAdmin]);

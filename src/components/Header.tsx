@@ -6,6 +6,7 @@ import { Sun, Moon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WHATSAPP_LINK } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useSiteContent } from "@/hooks/use-site-content";
 import logoDark from "@/assets/logo-dark.svg";
 import logoLight from "@/assets/logo-light.svg";
 
@@ -21,6 +22,12 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
   const location = useLocation();
+  const { data: c } = useSiteContent();
+
+  const whatsappLink = c
+    ? `https://wa.me/${c.whatsapp_number}?text=${encodeURIComponent(c.whatsapp_message)}`
+    : WHATSAPP_LINK;
+  const ctaText = c?.hero_cta ?? "Iniciar Avaliação";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -93,9 +100,9 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="mt-10">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="mt-10">
               <Button className="w-full font-semibold h-14 rounded-2xl text-[15px] active:scale-[0.98] transition-transform">
-                Iniciar Avaliação
+                {ctaText}
               </Button>
             </a>
           </nav>
@@ -150,9 +157,9 @@ export function Header() {
               {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
             </button>
 
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="hidden md:block">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hidden md:block">
               <Button size="sm" className="text-[12px] font-semibold h-8 px-4 rounded-lg">
-                Iniciar Avaliação
+                {ctaText}
               </Button>
             </a>
 
