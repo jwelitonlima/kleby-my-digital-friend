@@ -6,48 +6,38 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useSiteContent } from "@/hooks/use-site-content";
+import { useSiteContent, parseJson } from "@/hooks/use-site-content";
 
-/* ── Data ── */
-const metodo = [
+/* ── Fallback data ── */
+const defaultMetodo = [
   { num: "01", title: "Avaliação", desc: "Análise completa do seu corpo, rotina e objetivo." },
   { num: "02", title: "Planejamento", desc: "Treino personalizado com progressão estratégica." },
   { num: "03", title: "Execução", desc: "Acompanhamento constante com correção em tempo real." },
   { num: "04", title: "Ajustes", desc: "Revisão periódica para evolução contínua e segura." },
 ];
 
-const areas = [
-  {
-    title: "Hipertrofia",
-    desc: "Ganho de massa muscular com periodização inteligente e volume progressivo.",
-    msg: "Olá, Kléby! Quero saber sobre treino de Hipertrofia.",
-  },
-  {
-    title: "Emagrecimento",
-    desc: "Perda de gordura com saúde, sem dietas extremas. Treino + hábitos.",
-    msg: "Olá, Kléby! Quero saber sobre treino para Emagrecimento.",
-  },
-  {
-    title: "Consultoria Online",
-    desc: "Planilha personalizada, vídeos de execução e suporte remoto.",
-    msg: "Olá, Kléby! Tenho interesse na Consultoria Online.",
-  },
+const defaultAreas = [
+  { title: "Hipertrofia", desc: "Ganho de massa muscular com periodização inteligente e volume progressivo.", msg: "Olá, Kléby! Quero saber sobre treino de Hipertrofia." },
+  { title: "Emagrecimento", desc: "Perda de gordura com saúde, sem dietas extremas. Treino + hábitos.", msg: "Olá, Kléby! Quero saber sobre treino para Emagrecimento." },
+  { title: "Consultoria Online", desc: "Planilha personalizada, vídeos de execução e suporte remoto.", msg: "Olá, Kléby! Tenho interesse na Consultoria Online." },
 ];
 
-const resultados = [
+const defaultResultados = [
   { label: "Evolução Física", valor: "+100", sub: "alunos acompanhados" },
   { label: "Constância", valor: "95%", sub: "taxa de retenção" },
   { label: "Experiência", valor: "+5", sub: "anos de atuação" },
 ];
 
-const depoimentos = [
+const defaultDepoimentos = [
   { nome: "Ana S.", texto: "Em 6 meses, transformei meu corpo e minha relação com o exercício." },
   { nome: "Rafael M.", texto: "Nunca tive tanta consistência. O acompanhamento faz toda a diferença." },
   { nome: "Juliana C.", texto: "Treino que cabe na minha rotina e resultados que eu nunca imaginei." },
 ];
 
+const defaultStrip = ["Acompanhamento", "Ajustes semanais", "Evolução contínua"];
+
 /* ── Area item ── */
-function AreaItem({ item }: { item: typeof areas[0] }) {
+function AreaItem({ item, whatsappNumber }: { item: { title: string; desc: string; msg: string }; whatsappNumber: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -55,26 +45,13 @@ function AreaItem({ item }: { item: typeof areas[0] }) {
       onClick={() => setOpen(!open)}
     >
       <div className="flex items-center justify-between py-4 md:py-6">
-        <span className="text-title group-hover:text-primary transition-colors duration-200">
-          {item.title}
-        </span>
-        <ChevronRight
-          size={16}
-          className={cn(
-            "text-muted-foreground transition-transform duration-200",
-            open && "rotate-90"
-          )}
-        />
+        <span className="text-title group-hover:text-primary transition-colors duration-200">{item.title}</span>
+        <ChevronRight size={16} className={cn("text-muted-foreground transition-transform duration-200", open && "rotate-90")} />
       </div>
-      <div className={cn(
-        "overflow-hidden transition-all duration-300",
-        open ? "max-h-40 pb-4 md:pb-5" : "max-h-0"
-      )}>
-        <p className="text-[14px] text-muted-foreground leading-relaxed mb-3 max-w-md">
-          {item.desc}
-        </p>
+      <div className={cn("overflow-hidden transition-all duration-300", open ? "max-h-40 pb-4 md:pb-5" : "max-h-0")}>
+        <p className="text-[14px] text-muted-foreground leading-relaxed mb-3 max-w-md">{item.desc}</p>
         <a
-          href={`https://wa.me/5589988038518?text=${encodeURIComponent(item.msg)}`}
+          href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(item.msg)}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
@@ -90,10 +67,18 @@ function AreaItem({ item }: { item: typeof areas[0] }) {
 /* ── Home ── */
 const Home = () => {
   const { data: c } = useSiteContent();
-  const whatsappLink = c ? `https://wa.me/${c.whatsapp_number}?text=${encodeURIComponent(c.whatsapp_message)}` : WHATSAPP_LINK;
+  const whatsappNumber = c?.whatsapp_number ?? "5589988038518";
+  const whatsappLink = c ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(c.whatsapp_message)}` : WHATSAPP_LINK;
+
+  const metodo = parseJson(c, "metodo_steps", defaultMetodo);
+  const areas = parseJson(c, "areas_list", defaultAreas);
+  const resultados = parseJson(c, "resultados_stats", defaultResultados);
+  const depoimentos = parseJson(c, "depoimentos_home", defaultDepoimentos);
+  const strip = parseJson(c, "dashboard_strip", defaultStrip);
+
   return (
     <>
-      {/* Hero – Mobile: onboarding screen feel */}
+      {/* Hero */}
       <section className="relative min-h-[85vh] md:min-h-[92vh] flex items-center">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-10 items-center">
@@ -106,18 +91,14 @@ const Home = () => {
               <span className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground mb-6 block">
                 {c?.hero_label ?? 'Personal Trainer · CREF 000849-G/PI'}
               </span>
-
               <h1 className="text-hero mb-5 md:mb-5">
                 <span className="block">{c?.hero_line1 ?? 'Método.'}</span>
                 <span className="block">{c?.hero_line2 ?? 'Constância.'}</span>
                 <span className="block text-primary">{c?.hero_line3 ?? 'Resultado.'}</span>
               </h1>
-
               <p className="text-muted-foreground text-[15px] max-w-xs mb-8 md:mb-8 leading-relaxed">
                 {c?.hero_subtitle ?? 'Treinamento estratégico para evolução real.'}
               </p>
-
-              {/* Mobile: full-width CTA */}
               <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto">
                   <Button className="w-full md:w-auto font-semibold h-[52px] md:h-11 px-7 text-[15px] md:text-[13px] rounded-2xl md:rounded-lg active:scale-[0.98] transition-transform">
@@ -131,8 +112,6 @@ const Home = () => {
                 </Link>
               </div>
             </motion.div>
-
-            {/* Desktop only placeholder */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -155,7 +134,7 @@ const Home = () => {
       {/* Dashboard strip */}
       <div className="border-y border-border/50">
         <div className="container py-3 md:py-4 grid grid-cols-3 divide-x divide-border/50 text-center">
-          {["Acompanhamento", "Ajustes semanais", "Evolução contínua"].map((t) => (
+          {strip.map((t: string) => (
             <div key={t} className="px-1">
               <span className="text-[11px] md:text-[13px] text-muted-foreground font-medium">{t}</span>
             </div>
@@ -171,7 +150,7 @@ const Home = () => {
           {c?.metodo_subtitle ?? 'Um sistema claro de evolução, do primeiro treino ao resultado.'}
         </SectionSubtitle>
         <div className="max-w-lg space-y-0">
-          {metodo.map((item, i) => (
+          {metodo.map((item: any, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 6 }}
@@ -180,9 +159,7 @@ const Home = () => {
               transition={{ duration: 0.3, delay: i * 0.06 }}
               className="flex gap-4 md:gap-5 py-5 md:py-6 border-b border-border/40 last:border-0"
             >
-              <span className="text-xl md:text-3xl font-bold text-primary/20 leading-none pt-0.5 select-none">
-                {item.num}
-              </span>
+              <span className="text-xl md:text-3xl font-bold text-primary/20 leading-none pt-0.5 select-none">{item.num}</span>
               <div>
                 <h3 className="text-[15px] md:text-base font-semibold mb-1">{item.title}</h3>
                 <p className="text-[13px] md:text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -194,14 +171,14 @@ const Home = () => {
 
       {/* Áreas de Atuação */}
       <Section className="border-t border-border/40">
-        <SectionLabel>Áreas de Atuação</SectionLabel>
-        <SectionTitle>Escolha sua evolução</SectionTitle>
+        <SectionLabel>{c?.areas_label ?? 'Áreas de Atuação'}</SectionLabel>
+        <SectionTitle>{c?.areas_title ?? 'Escolha sua evolução'}</SectionTitle>
         <SectionSubtitle className="mb-8 md:mb-10">
-          Cada objetivo exige uma estratégia diferente.
+          {c?.areas_subtitle ?? 'Cada objetivo exige uma estratégia diferente.'}
         </SectionSubtitle>
         <div className="max-w-lg">
-          {areas.map((a, i) => (
-            <AreaItem key={i} item={a} />
+          {areas.map((a: any, i: number) => (
+            <AreaItem key={i} item={a} whatsappNumber={whatsappNumber} />
           ))}
         </div>
         <div className="mt-6 md:mt-8">
@@ -213,41 +190,22 @@ const Home = () => {
 
       {/* Resultados */}
       <Section className="border-t border-border/40">
-        <SectionLabel>Resultados</SectionLabel>
-        <SectionTitle>Dados de quem treina com método</SectionTitle>
+        <SectionLabel>{c?.resultados_label ?? 'Resultados'}</SectionLabel>
+        <SectionTitle>{c?.resultados_title ?? 'Dados de quem treina com método'}</SectionTitle>
         <div className="grid grid-cols-3 gap-3 md:gap-4 mt-8 md:mt-10 mb-10 md:mb-14">
-          {resultados.map((r, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 6 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.06 }}
-              className="bg-card rounded-xl p-4 md:p-6"
-            >
+          {resultados.map((r: any, i: number) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 6 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.06 }} className="bg-card rounded-xl p-4 md:p-6">
               <p className="text-xl md:text-3xl font-bold text-foreground mb-1">{r.valor}</p>
               <p className="text-[10px] md:text-[11px] font-semibold tracking-label uppercase text-muted-foreground mb-0.5">{r.label}</p>
               <p className="text-[10px] md:text-xs text-muted-foreground/70">{r.sub}</p>
             </motion.div>
           ))}
         </div>
-
-        {/* Depoimentos */}
         <div className="max-w-lg space-y-5 md:space-y-6">
-          {depoimentos.map((d, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 4 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-            >
-              <p className="text-[14px] md:text-[15px] leading-relaxed text-foreground/90 mb-1">
-                "{d.texto}"
-              </p>
-              <span className="text-[10px] md:text-[11px] font-semibold tracking-label uppercase text-muted-foreground">
-                {d.nome}
-              </span>
+          {depoimentos.map((d: any, i: number) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 4 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.05 }}>
+              <p className="text-[14px] md:text-[15px] leading-relaxed text-foreground/90 mb-1">"{d.texto}"</p>
+              <span className="text-[10px] md:text-[11px] font-semibold tracking-label uppercase text-muted-foreground">{d.nome}</span>
             </motion.div>
           ))}
         </div>
@@ -256,18 +214,9 @@ const Home = () => {
       {/* CTA Final */}
       <section className="bg-foreground text-background">
         <div className="container py-16 md:py-28 text-center max-w-lg mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3 }}
-          >
-            <h2 className="text-headline tracking-tight mb-3 md:mb-4">
-              {c?.cta_title ?? 'Comece agora.'}
-            </h2>
-            <p className="text-[13px] md:text-sm opacity-60 mb-6 md:mb-8">
-              {c?.cta_subtitle ?? 'Evolua com segurança e estratégia.'}
-            </p>
+          <motion.div initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3 }}>
+            <h2 className="text-headline tracking-tight mb-3 md:mb-4">{c?.cta_title ?? 'Comece agora.'}</h2>
+            <p className="text-[13px] md:text-sm opacity-60 mb-6 md:mb-8">{c?.cta_subtitle ?? 'Evolua com segurança e estratégia.'}</p>
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block md:inline-block">
               <Button className="w-full md:w-auto font-semibold h-[52px] md:h-12 px-8 text-[15px] md:text-sm rounded-2xl md:rounded-lg active:scale-[0.98] transition-transform">
                 {c?.hero_cta ?? 'Iniciar Avaliação'}

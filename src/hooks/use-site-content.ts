@@ -8,7 +8,7 @@ export function useSiteContent() {
     queryKey: ["site-content"],
     queryFn: async (): Promise<SiteContent> => {
       const { data, error } = await supabase
-        .from("site_content" as any)
+        .from("site_content")
         .select("key, value");
       if (error) throw error;
       const map: SiteContent = {};
@@ -21,11 +21,21 @@ export function useSiteContent() {
   });
 }
 
+/** Parse a JSON content key safely */
+export function parseJson<T>(content: SiteContent | undefined, key: string, fallback: T): T {
+  if (!content?.[key]) return fallback;
+  try {
+    return JSON.parse(content[key]) as T;
+  } catch {
+    return fallback;
+  }
+}
+
 export function useUpdateSiteContent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ key, value }: { key: string; value: string }) => {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from("site_content")
         .update({ value })
         .eq("key", key);
@@ -42,21 +52,18 @@ export function useUploadSiteImage() {
       const ext = file.name.split(".").pop();
       const path = `${key}.${ext}`;
       
-      // Upload to storage
       const { error: uploadError } = await supabase.storage
         .from("site-images")
         .upload(path, file, { upsert: true });
       if (uploadError) throw uploadError;
 
-      // Get public URL
       const { data: urlData } = supabase.storage
         .from("site-images")
         .getPublicUrl(path);
 
-      // Upsert reference in site_images table
-      const { error: dbError } = await (supabase as any)
+      const { error: dbError } = await supabase
         .from("site_images")
-        .upsert({ key, url: urlData.publicUrl }, { onConflict: "key" });
+        .upsert({ key, url: urlData.publicUrl } as any, { onConflict: "key" });
       if (dbError) throw dbError;
 
       return urlData.publicUrl;
@@ -70,7 +77,7 @@ export function useSiteImages() {
     queryKey: ["site-images"],
     queryFn: async (): Promise<Record<string, string>> => {
       const { data, error } = await supabase
-        .from("site_images" as any)
+        .from("site_images")
         .select("key, url");
       if (error) throw error;
       const map: Record<string, string> = {};

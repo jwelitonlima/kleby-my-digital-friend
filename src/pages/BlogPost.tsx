@@ -1,9 +1,12 @@
 import { useParams, Link } from "react-router-dom";
-import { blogPosts } from "./Conteudos";
 import { Section } from "@/components/Section";
+import { useSiteContent, parseJson } from "@/hooks/use-site-content";
+import type { BlogPost as BlogPostType } from "./Conteudos";
 
 const BlogPost = () => {
   const { slug } = useParams();
+  const { data: c } = useSiteContent();
+  const blogPosts = parseJson<BlogPostType[]>(c, "blog_posts", []);
   const post = blogPosts.find((p) => p.slug === slug);
 
   if (!post) {
