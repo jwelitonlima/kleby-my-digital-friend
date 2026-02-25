@@ -51,7 +51,10 @@ export function Footer() {
         </div>
         <div className="mt-8 md:mt-10 pt-4 border-t border-border/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-[11px] text-muted-foreground/40">
           <span>© {new Date().getFullYear()} Kléby Almeida Personal Trainer</span>
-          <span>CREF {cref}</span>
+          <div className="flex items-center gap-3">
+            <span>CREF {cref}</span>
+            <Link to="/admin/login" className="hover:text-muted-foreground transition-colors">·</Link>
+          </div>
         </div>
       </div>
     </footer>
