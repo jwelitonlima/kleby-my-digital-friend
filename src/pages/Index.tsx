@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 /* ── Data ── */
 const metodo = [
@@ -88,6 +89,8 @@ function AreaItem({ item }: { item: typeof areas[0] }) {
 
 /* ── Home ── */
 const Home = () => {
+  const { data: c } = useSiteContent();
+  const whatsappLink = c ? `https://wa.me/${c.whatsapp_number}?text=${encodeURIComponent(c.whatsapp_message)}` : WHATSAPP_LINK;
   return (
     <>
       {/* Hero – Mobile: onboarding screen feel */}
@@ -101,30 +104,29 @@ const Home = () => {
               className="max-w-lg"
             >
               <span className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground mb-6 block">
-                Personal Trainer · CREF 000849-G/PI
+                {c?.hero_label ?? 'Personal Trainer · CREF 000849-G/PI'}
               </span>
 
-              {/* Mobile: large stacked headline */}
               <h1 className="text-hero mb-5 md:mb-5">
-                <span className="block">Método.</span>
-                <span className="block">Constância.</span>
-                <span className="block text-primary">Resultado.</span>
+                <span className="block">{c?.hero_line1 ?? 'Método.'}</span>
+                <span className="block">{c?.hero_line2 ?? 'Constância.'}</span>
+                <span className="block text-primary">{c?.hero_line3 ?? 'Resultado.'}</span>
               </h1>
 
               <p className="text-muted-foreground text-[15px] max-w-xs mb-8 md:mb-8 leading-relaxed">
-                Treinamento estratégico para evolução real.
+                {c?.hero_subtitle ?? 'Treinamento estratégico para evolução real.'}
               </p>
 
               {/* Mobile: full-width CTA */}
               <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="w-full md:w-auto">
                   <Button className="w-full md:w-auto font-semibold h-[52px] md:h-11 px-7 text-[15px] md:text-[13px] rounded-2xl md:rounded-lg active:scale-[0.98] transition-transform">
-                    Iniciar Avaliação
+                    {c?.hero_cta ?? 'Iniciar Avaliação'}
                   </Button>
                 </a>
                 <Link to="/sobre" className="w-full md:w-auto">
                   <Button variant="outline" className="w-full md:w-auto font-semibold h-[52px] md:h-11 px-7 text-[15px] md:text-[13px] rounded-2xl md:rounded-lg active:scale-[0.98] transition-transform">
-                    Conhecer o método
+                    {c?.hero_cta2 ?? 'Conhecer o método'}
                   </Button>
                 </Link>
               </div>
@@ -163,10 +165,10 @@ const Home = () => {
 
       {/* O Método */}
       <Section>
-        <SectionLabel>O Método</SectionLabel>
-        <SectionTitle>Como funciona</SectionTitle>
+        <SectionLabel>{c?.metodo_label ?? 'O Método'}</SectionLabel>
+        <SectionTitle>{c?.metodo_title ?? 'Como funciona'}</SectionTitle>
         <SectionSubtitle className="mb-8 md:mb-12">
-          Um sistema claro de evolução, do primeiro treino ao resultado.
+          {c?.metodo_subtitle ?? 'Um sistema claro de evolução, do primeiro treino ao resultado.'}
         </SectionSubtitle>
         <div className="max-w-lg space-y-0">
           {metodo.map((item, i) => (
@@ -261,14 +263,14 @@ const Home = () => {
             transition={{ duration: 0.3 }}
           >
             <h2 className="text-headline tracking-tight mb-3 md:mb-4">
-              Comece agora.
+              {c?.cta_title ?? 'Comece agora.'}
             </h2>
             <p className="text-[13px] md:text-sm opacity-60 mb-6 md:mb-8">
-              Evolua com segurança e estratégia.
+              {c?.cta_subtitle ?? 'Evolua com segurança e estratégia.'}
             </p>
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="block md:inline-block">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block md:inline-block">
               <Button className="w-full md:w-auto font-semibold h-[52px] md:h-12 px-8 text-[15px] md:text-sm rounded-2xl md:rounded-lg active:scale-[0.98] transition-transform">
-                Iniciar Avaliação
+                {c?.hero_cta ?? 'Iniciar Avaliação'}
               </Button>
             </a>
           </motion.div>

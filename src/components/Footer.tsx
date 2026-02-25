@@ -1,11 +1,21 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
+import { useSiteContent } from "@/hooks/use-site-content";
 import logoDark from "@/assets/logo-dark.svg";
 import logoLight from "@/assets/logo-light.svg";
 
 export function Footer() {
   const { theme } = useTheme();
+  const { data: c } = useSiteContent();
+
+  const whatsappLink = c
+    ? `https://wa.me/${c.whatsapp_number}?text=${encodeURIComponent(c.whatsapp_message)}`
+    : WHATSAPP_LINK;
+  const instagramLink = c?.instagram_link ?? INSTAGRAM_LINK;
+  const email = c?.email ?? EMAIL;
+  const cref = c?.cref ?? "000849-G/PI";
+
   return (
     <footer className="border-t border-border/40">
       <div className="container py-10 md:py-14">
@@ -13,7 +23,7 @@ export function Footer() {
           <div>
             <img src={theme === "dark" ? logoDark : logoLight} alt="Kléby Almeida" className="h-[100px] w-auto mb-4" />
             <p className="text-[13px] text-muted-foreground leading-relaxed max-w-xs">
-              Treinamento estratégico para evolução real.
+              {c?.footer_desc ?? 'Treinamento estratégico para evolução real.'}
             </p>
           </div>
           <div>
@@ -33,15 +43,15 @@ export function Footer() {
           <div>
             <span className="text-[11px] font-semibold tracking-label uppercase text-muted-foreground/50 block mb-3">Contato</span>
             <div className="flex flex-col gap-2.5 md:gap-2">
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-[14px] md:text-[13px] text-muted-foreground hover:text-foreground transition-colors">WhatsApp</a>
-              <a href={INSTAGRAM_LINK} target="_blank" rel="noopener noreferrer" className="text-[14px] md:text-[13px] text-muted-foreground hover:text-foreground transition-colors">Instagram</a>
-              <a href={`mailto:${EMAIL}`} className="text-[14px] md:text-[13px] text-muted-foreground hover:text-foreground transition-colors">{EMAIL}</a>
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-[14px] md:text-[13px] text-muted-foreground hover:text-foreground transition-colors">WhatsApp</a>
+              <a href={instagramLink} target="_blank" rel="noopener noreferrer" className="text-[14px] md:text-[13px] text-muted-foreground hover:text-foreground transition-colors">Instagram</a>
+              <a href={`mailto:${email}`} className="text-[14px] md:text-[13px] text-muted-foreground hover:text-foreground transition-colors">{email}</a>
             </div>
           </div>
         </div>
         <div className="mt-8 md:mt-10 pt-4 border-t border-border/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-[11px] text-muted-foreground/40">
           <span>© {new Date().getFullYear()} Kléby Almeida Personal Trainer</span>
-          <span>CREF 000849-G/PI</span>
+          <span>CREF {cref}</span>
         </div>
       </div>
     </footer>
