@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { WHATSAPP_LINK } from "@/lib/constants";
+import { useSiteContent } from "@/hooks/use-site-content";
 
 export function FloatingWhatsApp() {
   const [hidden, setHidden] = useState(false);
+  const { data: c } = useSiteContent();
+
+  const whatsappLink = c
+    ? `https://wa.me/${c.whatsapp_number}?text=${encodeURIComponent(c.whatsapp_message)}`
+    : WHATSAPP_LINK;
 
   useEffect(() => {
     const check = () => {
@@ -23,7 +29,7 @@ export function FloatingWhatsApp() {
 
   return (
     <a
-      href={WHATSAPP_LINK}
+      href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-lg shadow-[#25D366]/20 hover:shadow-xl hover:shadow-[#25D366]/30 hover:scale-105 active:scale-95 transition-all duration-300"

@@ -12,7 +12,6 @@ export default function AdminLogin() {
   const { signIn, isAdmin, user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect to admin if already logged in as admin
   useEffect(() => {
     if (user && isAdmin) {
       navigate("/admin");
@@ -27,13 +26,11 @@ export default function AdminLogin() {
       setLoading(false);
       toast.error("Credenciais inválidas");
     }
-    // Don't setLoading(false) on success — the useEffect above will navigate
-    // once isAdmin becomes true via onAuthStateChange
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4 p-6">
+    <div className="min-h-[70vh] flex items-center justify-center px-6">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         <h1 className="text-xl font-bold text-center mb-6">Acesso Admin</h1>
         <Input
           type="email"
@@ -41,6 +38,7 @@ export default function AdminLogin() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="h-[52px] md:h-11 rounded-2xl md:rounded-lg text-[16px] md:text-sm"
         />
         <Input
           type="password"
@@ -48,8 +46,13 @@ export default function AdminLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="h-[52px] md:h-11 rounded-2xl md:rounded-lg text-[16px] md:text-sm"
         />
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button
+          type="submit"
+          className="w-full h-[52px] md:h-11 rounded-2xl md:rounded-lg text-[15px] md:text-sm font-semibold active:scale-[0.98] transition-transform"
+          disabled={loading}
+        >
           {loading ? "Entrando..." : "Entrar"}
         </Button>
       </form>
