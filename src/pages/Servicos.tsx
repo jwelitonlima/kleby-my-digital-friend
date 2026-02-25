@@ -16,19 +16,22 @@ const defaultServicos = [
 function ServiceItem({ item, whatsappNumber }: { item: { title: string; desc: string; msg: string }; whatsappNumber: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-border/40 cursor-pointer group" onClick={() => setOpen(!open)}>
+    <div
+      className="border-b border-border/40 cursor-pointer group active:bg-muted/30 transition-colors duration-150"
+      onClick={() => setOpen(!open)}
+    >
       <div className="flex items-center justify-between py-5 md:py-6">
         <h3 className="text-title group-hover:text-primary transition-colors duration-200">{item.title}</h3>
         <ChevronRight size={16} className={cn("text-muted-foreground transition-transform duration-300", open && "rotate-90")} />
       </div>
-      <div className={cn("overflow-hidden transition-all duration-400", open ? "max-h-40 pb-5" : "max-h-0")}>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-3 max-w-md">{item.desc}</p>
+      <div className={cn("overflow-hidden transition-all duration-300", open ? "max-h-40 pb-5" : "max-h-0")}>
+        <p className="text-[14px] md:text-sm text-muted-foreground leading-relaxed mb-3 max-w-md">{item.desc}</p>
         <a
           href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(item.msg)}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="text-primary text-[13px] font-semibold hover:underline"
+          className="inline-block text-primary text-[14px] md:text-[13px] font-semibold py-1 active:opacity-70 transition-opacity"
         >
           Quero este serviço →
         </a>
@@ -46,7 +49,7 @@ const Servicos = () => {
     <Section>
       <SectionLabel>{c?.servicos_label ?? 'Serviços'}</SectionLabel>
       <SectionTitle>{c?.servicos_title ?? 'Soluções para cada objetivo'}</SectionTitle>
-      <SectionSubtitle className="mb-10">{c?.servicos_subtitle ?? 'Do presencial ao online. Sempre com método.'}</SectionSubtitle>
+      <SectionSubtitle className="mb-8 md:mb-10">{c?.servicos_subtitle ?? 'Do presencial ao online. Sempre com método.'}</SectionSubtitle>
       <div className="max-w-lg">
         {servicos.map((s: any, i: number) => <ServiceItem key={i} item={s} whatsappNumber={whatsappNumber} />)}
       </div>

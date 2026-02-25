@@ -99,7 +99,7 @@ const Contato = () => {
         <div>
           <SectionLabel>Contato</SectionLabel>
           <SectionTitle>Vamos conversar</SectionTitle>
-          <div className="mt-8 md:mt-10 space-y-3">
+          <div className="mt-6 md:mt-10 space-y-3">
             {contatos.map((ct, i) => (
               <motion.a
                 key={i}
@@ -111,12 +111,12 @@ const Contato = () => {
                 transition={{ duration: 0.2, delay: i * 0.04 }}
                 className={cn(
                   "flex items-center justify-between px-5 py-5 md:py-4 rounded-2xl",
-                  "bg-muted/40 hover:bg-muted/80 active:bg-muted/60 transition-all duration-150",
+                  "bg-muted/40 hover:bg-muted/80 active:bg-muted/60 active:scale-[0.98] transition-all duration-150",
                   "group cursor-pointer min-h-[56px]"
                 )}
               >
                 <span className="text-[15px] md:text-[14px] font-semibold group-hover:text-primary transition-colors duration-200">{ct.label}</span>
-                <span className="text-[12px] text-muted-foreground group-hover:text-foreground/60 transition-colors duration-200">{ct.sub}</span>
+                <span className="text-[13px] md:text-[12px] text-muted-foreground group-hover:text-foreground/60 transition-colors duration-200 truncate ml-4">{ct.sub}</span>
               </motion.a>
             ))}
           </div>
@@ -133,7 +133,7 @@ const Contato = () => {
               <div className="flex gap-3">
                 {["Online", "Presencial"].map((opt) => (
                   <button key={opt} type="button" className={cn(
-                    "flex-1 md:flex-none px-5 py-3.5 md:py-2.5 text-[14px] md:text-[13px] font-medium rounded-2xl transition-all duration-200 min-h-[48px] active:scale-[0.97]",
+                    "flex-1 md:flex-none px-5 py-3.5 md:py-2.5 text-[15px] md:text-[13px] font-medium rounded-2xl transition-all duration-200 min-h-[48px] active:scale-[0.97]",
                     form.preferencia === opt ? "bg-primary/10 text-primary border border-primary/20" : "bg-muted/50 text-muted-foreground border border-transparent hover:bg-muted/80 hover:text-foreground"
                   )} onClick={() => setForm({ ...form, preferencia: opt })}>
                     {opt}
