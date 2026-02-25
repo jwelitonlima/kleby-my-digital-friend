@@ -13,6 +13,8 @@ import Planos from "./pages/Planos";
 import Conteudos from "./pages/Conteudos";
 import BlogPost from "./pages/BlogPost";
 import Contato from "./pages/Contato";
+import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +36,8 @@ const App = () => (
               <Route path="/conteudos" element={<Conteudos />} />
               <Route path="/conteudos/:slug" element={<BlogPost />} />
               <Route path="/contato" element={<Contato />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
