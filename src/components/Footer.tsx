@@ -26,7 +26,7 @@ export function Footer() {
       <div className="container py-12 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           <div>
-            <img src={theme === "dark" ? logoDark : logoLight} alt="Kléby Almeida" className="h-[80px] md:h-[100px] w-auto mb-4" />
+            <img src={logoDark} alt="Kléby Almeida" className="h-[80px] md:h-[100px] w-auto mb-4" />
             <p className="text-[14px] md:text-[13px] text-muted-foreground leading-relaxed max-w-xs">
               {c?.footer_desc ?? 'Treinamento estratégico para evolução real.'}
             </p>
