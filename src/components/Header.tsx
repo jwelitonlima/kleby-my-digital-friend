@@ -66,13 +66,6 @@ export function Header() {
             </Link>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Alternar tema"
-              >
-                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-              </button>
-              <button
                 onClick={() => setOpen(false)}
                 className="p-2 text-foreground"
                 aria-label="Fechar menu"
