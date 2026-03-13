@@ -4,7 +4,6 @@ import { useSiteContent } from "@/hooks/use-site-content";
 import logoDark from "@/assets/logo-dark.svg";
 
 export function Footer() {
-  const { theme } = useTheme();
   const { data: c } = useSiteContent();
 
   const whatsappLink = c
