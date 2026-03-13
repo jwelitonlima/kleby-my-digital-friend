@@ -18,7 +18,7 @@ const navItems = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { theme, setTheme } = useTheme();
+  
   const location = useLocation();
   const { data: c } = useSiteContent();
 
