@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { ArrowRight, MessageCircle, Instagram, Mail, MapPin, Send } from "lucide-react";
+import { ArrowRight, MessageCircle, Instagram, Mail, Send } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
 
 /* ── Floating label input ── */
@@ -88,7 +88,6 @@ const channelIcons = {
   WhatsApp: MessageCircle,
   Instagram: Instagram,
   "E-mail": Mail,
-  Local: MapPin,
 };
 
 function ChannelCard({ label, sub, href, index }: { label: string; sub: string; href: string; index: number }) {
@@ -146,13 +145,12 @@ const Contato = () => {
   const instagramLink = c?.instagram_link ?? INSTAGRAM_LINK;
   const instagramHandle = c?.instagram_handle ?? "@kleby.almeida_personal";
   const email = c?.email ?? EMAIL;
-  const local = c?.contato_local ?? "Picos, PI";
+  
 
   const contatos = [
     { label: "WhatsApp", sub: whatsappLink.includes("wa.me") ? "Resposta rápida" : "Principal", href: whatsappLink },
     { label: "Instagram", sub: instagramHandle, href: instagramLink },
     { label: "E-mail", sub: email, href: `mailto:${email}` },
-    { label: "Local", sub: local, href: "#" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
