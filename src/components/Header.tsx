@@ -59,7 +59,7 @@ export function Header() {
           <div className="flex items-center justify-between h-16 px-6">
             <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
               <img
-                src={theme === "dark" ? logoDark : logoLight}
+                src={logoDark}
                 alt="Kléby Almeida"
                 className="h-[50px] w-auto"
               />
