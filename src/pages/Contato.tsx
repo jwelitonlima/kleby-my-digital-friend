@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { WHATSAPP_LINK, INSTAGRAM_LINK, EMAIL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { ArrowRight, MessageCircle, Instagram, Mail, MapPin, Send } from "lucide-react";
+import { ArrowRight, MessageCircle, Instagram, Mail, Send } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
 
 /* ── Floating label input ── */
