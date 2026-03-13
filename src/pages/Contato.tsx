@@ -152,7 +152,6 @@ const Contato = () => {
     { label: "WhatsApp", sub: whatsappLink.includes("wa.me") ? "Resposta rápida" : "Principal", href: whatsappLink },
     { label: "Instagram", sub: instagramHandle, href: instagramLink },
     { label: "E-mail", sub: email, href: `mailto:${email}` },
-    { label: "Local", sub: local, href: "#" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
