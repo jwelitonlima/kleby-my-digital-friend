@@ -145,7 +145,7 @@ const Contato = () => {
   const instagramLink = c?.instagram_link ?? INSTAGRAM_LINK;
   const instagramHandle = c?.instagram_handle ?? "@kleby.almeida_personal";
   const email = c?.email ?? EMAIL;
-  const local = c?.contato_local ?? "Picos, PI";
+  
 
   const contatos = [
     { label: "WhatsApp", sub: whatsappLink.includes("wa.me") ? "Resposta rápida" : "Principal", href: whatsappLink },
