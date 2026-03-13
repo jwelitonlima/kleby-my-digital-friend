@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
-import { useTheme } from "next-themes";
-import { Sun, Moon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WHATSAPP_LINK } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useSiteContent } from "@/hooks/use-site-content";
 import logoDark from "@/assets/logo-dark.svg";
-import logoLight from "@/assets/logo-light.svg";
 
 const navItems = [
   { label: "Início", path: "/" },
@@ -20,7 +18,7 @@ const navItems = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { theme, setTheme } = useTheme();
+  
   const location = useLocation();
   const { data: c } = useSiteContent();
 
@@ -61,19 +59,12 @@ export function Header() {
           <div className="flex items-center justify-between h-16 px-6">
             <Link to="/" onClick={() => setOpen(false)} className="flex items-center">
               <img
-                src={theme === "dark" ? logoDark : logoLight}
+                src={logoDark}
                 alt="Kléby Almeida"
                 className="h-[50px] w-auto"
               />
             </Link>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Alternar tema"
-              >
-                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-              </button>
               <button
                 onClick={() => setOpen(false)}
                 className="p-2 text-foreground"
@@ -125,7 +116,7 @@ export function Header() {
         <div className="container flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
             <img
-              src={theme === "dark" ? logoDark : logoLight}
+              src={logoDark}
               alt="Kléby Almeida"
               className="h-[50px] w-auto"
             />
@@ -149,13 +140,6 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
-              aria-label="Alternar tema"
-            >
-              {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
 
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hidden md:block">
               <Button size="sm" className="text-[12px] font-semibold h-8 px-4 rounded-lg">
