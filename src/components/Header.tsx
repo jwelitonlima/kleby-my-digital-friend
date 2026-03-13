@@ -140,13 +140,6 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-accent"
-              aria-label="Alternar tema"
-            >
-              {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
 
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hidden md:block">
               <Button size="sm" className="text-[12px] font-semibold h-8 px-4 rounded-lg">
