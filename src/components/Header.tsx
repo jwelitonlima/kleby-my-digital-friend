@@ -116,7 +116,7 @@ export function Header() {
         <div className="container flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
             <img
-              src={theme === "dark" ? logoDark : logoLight}
+              src={logoDark}
               alt="Kléby Almeida"
               className="h-[50px] w-auto"
             />
