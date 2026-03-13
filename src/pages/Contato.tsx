@@ -88,7 +88,6 @@ const channelIcons = {
   WhatsApp: MessageCircle,
   Instagram: Instagram,
   "E-mail": Mail,
-  Local: MapPin,
 };
 
 function ChannelCard({ label, sub, href, index }: { label: string; sub: string; href: string; index: number }) {
