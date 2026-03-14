@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Download Logo HD</title>
+  <style>
+    body { background: #111; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; gap: 24px; }
+    canvas { border: 1px solid #333; border-radius: 8px; max-width: 90vw; }
+    .buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    button { background: #1BA454; color: #fff; border: none; padding: 14px 28px; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; }
+    button:hover { background: #15903f; }
+    p { color: #999; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h2>Logo Kléby Almeida — PNG HD</h2>
+  <canvas id="canvas"></canvas>
+  <div class="buttons">
+    <button onclick="download('dark', 2000)">⬇ Fundo Escuro (2000px)</button>
+    <button onclick="download('transparent', 2000)">⬇ Fundo Transparente (2000px)</button>
+    <button onclick="download('dark', 4000)">⬇ Fundo Escuro (4000px)</button>
+    <button onclick="download('transparent', 4000)">⬇ Fundo Transparente (4000px)</button>
+  </div>
+  <p>Clique para baixar em alta definição para redes sociais</p>
+
+  <script>
+    const svgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" fill="none">
+      <g transform="translate(145, 10)">
+        <path d="M45 5 C20 10, 5 35, 5 60 C5 85, 15 105, 35 115" stroke="#1BA454" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <path d="M55 0 L95 0 L55 40 Z" fill="#1BA454"/>
+        <path d="M50 25 L50 95 M50 60 L85 25 M50 60 L85 95" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M75 115 C100 105, 110 80, 110 60 C110 35, 95 15, 75 5" stroke="#ffffff" stroke-width="5" fill="none" opacity="0.3"/>
+      </g>
+      <text x="200" y="175" text-anchor="middle" font-family="Trebuchet MS, Arial, sans-serif" font-size="48" font-weight="700" fill="#1BA454" letter-spacing="1">Kléby Almeida</text>
+      <text x="200" y="210" text-anchor="middle" font-family="Trebuchet MS, Arial, sans-serif" font-size="22" font-weight="400" fill="#999999" letter-spacing="6">PERSONAL TRAINER</text>
+    </svg>`;
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    function render(width, bg) {
+      const ratio = 280 / 400;
+      const height = Math.round(width * ratio);
+      canvas.width = width;
+      canvas.height = height;
+      if (bg === 'dark') {
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, width, height);
+      } else {
+        ctx.clearRect(0, 0, width, height);
+      }
+      return new Promise(resolve => {
+        const img = new Image();
+        const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, width, height);
+          URL.revokeObjectURL(url);
+          resolve();
+        };
+        img.src = url;
+      });
+    }
+
+    function download(bg, size) {
+      render(size, bg).then(() => {
+        const link = document.createElement('a');
+        link.download = `logo-kleby-${bg}-${size}px.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+
+    render(2000, 'dark');
+  </script>
+</body>
+</html>
